@@ -32,6 +32,8 @@ class Ui_Form(QtGui.QWidget):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
 		self.setupUi(self)
+		self.kill = False
+		self.queue = Queue() #queue for incoming client data
 		
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8("Form"))
@@ -61,20 +63,15 @@ class Ui_Form(QtGui.QWidget):
 		self.startserver_btn.setText(_translate("Form", "Start PiScout Server", None))
 		self.startserver_btn.clicked.connect(self.start_bluetooth_server)
 		self.stopserver_btn.clicked.connect(self.kill_server)
-		global kill #can i do this
-		kill = False
 
 	def kill_server(self):
-		global kill
-		kill = True
+		self.kill = True
                 
 	def start_bluetooth_server(self):
 		Thread(target = self.bluetooth_server).start()
 		
-	queue = Queue() #suspicious as heck, not sure if this will get called ever (idk how to python)
 	def bluetooth_server(self):
-		global kill
-		kill = False
+		self.kill = False
 		
 		print('started new thread for server')
 		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -87,10 +84,7 @@ class Ui_Form(QtGui.QWidget):
 		#also make it so that this doesnt cause the GUI to hang
 		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
 		
-		global queue #make a queue for incoming client data
-		queue = Queue()
-		
-		while kill == False:
+		while self.kill == False:
 			try:
 				client_socket, client_info = server_socket.accept();
 				name = bluetooth.lookup_name(client_info[0], 4)
@@ -100,9 +94,9 @@ class Ui_Form(QtGui.QWidget):
 				sleep(0.2)
 			
 			#in server main loop, also process the data from the clients
-			if not queue.empty():
+			if not self.queue.empty():
 				print('reading data from queue')
-				self.process(queue.get())
+				self.process(self.queue.get())
 				
 		print('closing server')
 		#what to heck is this trash
@@ -124,8 +118,7 @@ class Ui_Form(QtGui.QWidget):
 					print('disconnected from', name)
 					break
 				
-				global queue
-				queue.put(data)
+				self.queue.put(data)
 				print('data added to queue')
 	
 	

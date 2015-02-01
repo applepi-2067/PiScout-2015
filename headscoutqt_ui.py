@@ -33,7 +33,7 @@ class Ui_Form(QtGui.QWidget):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
 		self.setupUi(self)
-		self.kill = False
+		self.kill = True
 		self.queue = Queue() #queue for incoming client data
 		
 	def setupUi(self, Form):
@@ -86,6 +86,10 @@ class Ui_Form(QtGui.QWidget):
 			self.progressBar.setProperty("value", self.step)
 
 	def start_bluetooth_server(self):
+		if not self.kill:
+			return
+
+		self.kill = False
 		Thread(target = self.bluetooth_server).start()
 		while self.step < 100:
 			sleep(.01)
@@ -103,8 +107,6 @@ class Ui_Form(QtGui.QWidget):
 		server_socket.listen(2)
 		print('listening for clients')
 	
-		#figure out how to add a button to break from this loop
-		#also make it so that this doesnt cause the GUI to hang
 		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
 		
 		while self.kill == False:

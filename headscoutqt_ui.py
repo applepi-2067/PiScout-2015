@@ -62,6 +62,9 @@ class Ui_Form(QtGui.QWidget):
 		self.startserver_btn.setToolTip(_translate("Form", "Click to start the bluetooth server", None))
 		self.startserver_btn.setText(_translate("Form", "Start PiScout Server", None))
 		self.startserver_btn.clicked.connect(self.start_bluetooth_server)
+		
+		self.stopserver_btn.setToolTip(_translate("Form", "Click to stop the bluetooth server", None))
+		self.stopserver_btn.setText(_translate("Form", "Stop PiScout Server", None))
 		self.stopserver_btn.clicked.connect(self.kill_server)
 
 	def kill_server(self):

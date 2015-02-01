@@ -68,9 +68,9 @@ class Ui_Form(QtGui.QWidget):
 			buffer = f.read(16)
 			if buffer.isnumeric():
 				f.seek(0)
-				points = int(f.read(16))
-				points =+ 1
-				f.write(str(points))
+				points = int(f.read(16)) 
+				points += 1 
+				f.write(str(points)) 
 				print('Added 1 point')
 			elif buffer == '':
 				print('File is empty. Adding 1 point.')

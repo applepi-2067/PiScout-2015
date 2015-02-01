@@ -63,22 +63,21 @@ class Ui_Form(QtGui.QWidget):
 		print(sys.argv[0])
 	
 	def addpt(self):
-		try:
-			with open('points.txt','r+', encoding='ASCII') as f:
+	
+		with open('points.txt','r+', encoding='ASCII') as f:
+			buffer = f.read(16)
+			if buffer.isnumeric():
 				points = int(f.read(16))
 				points =+ 1
 				f.write(str(points))
-				
-		except ValueError:
-			print('The file is empty or has invalid characters, adding 1 point...')
-			with open('points.txt','r+', encoding='ASCII') as f:
+			elif buffer == '':
+				print('File is empty. Adding 1 point.')
 				f.write('1')
-				
-		else:
-			print('Invalid characters in file. Replacing with 1 point.')
-			f.truncate()
-			f.open('points.txt', 'r+')
-			f.write('1')
+			else:
+				print('Invalid characters in file. Replacing with 1 point.')
+				f.truncate()
+				with open('points.txt','w+', encoding='ASCII') as f:
+					f.write('1')
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

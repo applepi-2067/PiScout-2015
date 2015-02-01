@@ -74,20 +74,21 @@ class Ui_Form(QtGui.QWidget):
 	queue = Queue() #suspicious as heck, not sure if this will get called ever (idk how to python)
 	def bluetooth_server(self):
 		global kill
-		kill = false
+		kill = False
 		
 		print('started new thread for server')
 		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-	
 		server_socket.bind(("", 27))
 		print('server started')
-	
 		server_socket.listen(2)
 		print('listening for clients')
 	
 		#figure out how to add a button to break from this loop
 		#also make it so that this doesnt cause the GUI to hang
 		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
+		
+		global queue #make a queue for incoming client data
+		queue = Queue()
 		
 		while kill == False:
 			try:
@@ -96,7 +97,12 @@ class Ui_Form(QtGui.QWidget):
 				print('accepted connection from', name);
 				Thread(target = self.client_handler, args = [client_socket, name]).start()		
 			except: #will throw exceptions constantly until client is found (i hope)
-				sleep(0.2) 
+				sleep(0.2)
+			
+			#in server main loop, also process the data from the clients
+			if not queue.empty():
+				print('reading data from queue')
+				self.process(queue.get())
 				
 		print('closing server')
 		#what to heck is this trash
@@ -106,7 +112,7 @@ class Ui_Form(QtGui.QWidget):
 	
 		server_socket.close()
 	
-	def client_handler(client_socket, name):
+	def client_handler(self, client_socket, name):
 		print('started new thread for client', name)
 		while True:
 			data = client_socket.recv(1024)
@@ -118,11 +124,12 @@ class Ui_Form(QtGui.QWidget):
 					print('disconnected from', name)
 					break
 				
+				global queue
 				queue.put(data)
 				print('data added to queue')
 	
 	
-	def update_data(data):
+	def process(self, data):
 		print('processing data: ', data)
 
 if __name__ == '__main__':

@@ -28,6 +28,7 @@ except AttributeError:
 class Ui_Form(QtGui.QWidget):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
+		self.server_address = None
 		self.setupUi(self)
 		
 	def setupUi(self, Form):
@@ -43,17 +44,22 @@ class Ui_Form(QtGui.QWidget):
 		self.addpt_btn = QtGui.QPushButton(Form)
 		self.addpt_btn.setObjectName(_fromUtf8("addpt_btn"))
 		self.verticalLayout.addWidget(self.addpt_btn)
+				self.addpt_btn = QtGui.QPushButton(Form)
+		self.sync_btn.setObjectName(_fromUtf8("sync_btn"))
+		self.verticalLayout.addWidget(self.sync_btn)
 		self.verticalLayout_2.addLayout(self.verticalLayout)
 
 		self.retranslateUi(Form)
 		QtCore.QMetaObject.connectSlotsByName(Form)
 
 	def retranslateUi(self, Form):
-		Form.setWindowTitle(_translate("Form", "Apple Pi Scouter", None))
+		Form.setWindowTitle(_translate("Form", "PiScout", None))
 		self.open_btn.setText(_translate("Form", "Open file", None))
 		self.open_btn.clicked.connect(self.openfile)
 		self.addpt_btn.setText(_translate("Form", "Add point", None))
 		self.addpt_btn.clicked.connect(self.addpt)
+		self.sync_btn.setText(_translate("Form", "Sync with server", None))
+		self.sync_btn.clicked.connect(self.sync)
 	
 	def openfile(self):
 		try:
@@ -63,9 +69,8 @@ class Ui_Form(QtGui.QWidget):
 		print(sys.argv[0])
 	
 	def addpt(self):
-	
 		with open('points.txt','r+', encoding='ASCII') as f:
-			buffer = f.read(16)
+			buffer = f.read(16) #wot2hek is this point adding stuff
 			if buffer.isnumeric():
 				f.seek(0)
 				points = int(f.read(16)) 
@@ -80,6 +85,32 @@ class Ui_Form(QtGui.QWidget):
 				f.truncate()
 				with open('points.txt','w+', encoding='ASCII') as f:
 					f.write('1')
+					
+	def sync(self):
+		print('searching for server')
+		nearby_devices = bluetooth.discover_devices()
+
+		for address in nearby_devices:
+			if bluetooth.lookup_name(address, 8) == 'APPLEPI-PC': #CHANGE TO SERVER NAME
+				server_address = address
+				break
+
+		if server_address is not None:
+			print('found server with address', server_address)
+		else:
+			print('could not find server')
+			return
+
+		socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+		socket.connect((server_address, 27))
+		print('successfully connected to server')
+
+		msg = 'ohai'
+		socket.send(msg)
+		print('sent: ', msg)
+
+		socket.close()
+
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

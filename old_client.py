@@ -3,7 +3,7 @@ import bluetooth
 server_address = None
 
 print('searching for server')
-nearby_devices = bluetooth.discousuinver_devices()
+nearby_devices = bluetooth.discover_devices()
 
 for address in nearby_devices:
     if bluetooth.lookup_name(address, 8) == 'APPLEPI-PC':

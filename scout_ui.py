@@ -57,33 +57,28 @@ class Ui_Form(QtGui.QWidget):
 	
 	def openfile(self):
 		try:
-			f = open('points.txt','r+')
+			f = open('points.txt','rt')
 		except FileNotFoundError:
-			f = open('points.txt', 'w+')
+			f = open('points.txt', 'wt')
 		print(sys.argv[0])
 	
 	def addpt(self):
-		path = sys.argv[1] if len(sys.argv) > 1 else 'points.txt' 
-			
-		if not os.path.exists(path):
-			print('that points file does not exist')
-			sys.exit(2)
-	 
-			file = open(path, 'rt', encoding='ASCII')
-			buffer = file.read(16)
-			file.close()
-			if buffer.isnumeric():
-					points = int(buffer)
-					print(points)
-			elif buffer == '':
-					print('points file is empty; putting 1 point in it')
-					file = open(path, 'wt', encoding='ASCII')
-					file.write('1')
-					file.close()
-					sys.exit(-1)
-			else:
-					print('this file does not appear to be a points file')
-					sys.exit(3)
+		try:
+			with open('points.txt','r+', encoding='ASCII') as f:
+				points = int(f.read(16))
+				points =+ 1
+				f.write(str(points))
+				
+		except ValueError:
+			print('The file is empty or has invalid characters, adding 1 point...')
+			with open('points.txt','r+', encoding='ASCII') as f:
+				f.write('1')
+				
+		else:
+			print('Invalid characters in file. Replacing with 1 point.')
+			f.truncate()
+			f.open('points.txt', 'r+')
+			f.write('1')
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

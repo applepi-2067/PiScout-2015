@@ -67,17 +67,20 @@ class Ui_Form(QtGui.QWidget):
 	    server_socket.listen(2)
 	    print('listening for clients')
 	
+		#figure out how to add a button to break from this loop
+		#also make it so that this doesnt cause the GUI to hang
 	    while True:
 	        client_socket, client_info = server_socket.accept();
 	        name = bluetooth.lookup_name(client_info[0], 4)
 	        print('accepted connection from', name);
 	        Thread(target = client_handler, args = [client_socket, name]).start()
 	
-	    data = client_socket.recv(1024);
-	    print("received:", data)
+	    #what to heck is this trash
+		#data = client_socket.recv(1024);
+	    #print("received:", data)
+		#client_socket.close()
 	
 	    server_socket.close()
-	    client_socket.close()
 	
 	def client_handler(client_socket, name):
 	    print('started new thread for client', name)

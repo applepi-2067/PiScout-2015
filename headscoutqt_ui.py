@@ -44,6 +44,11 @@ class Ui_Form(QtGui.QWidget):
 		self.startserver_btn.setDefault(True)
 		self.startserver_btn.setObjectName(_fromUtf8("startserver_btn"))
 		self.verticalLayout.addWidget(self.startserver_btn)
+		
+		self.stopserver_btn = QtGui.QPushButton(Form)
+		self.stopserver_btn.setObjectName(_fromUtf8("stopserver_btn"))
+		self.verticalLayout.addWidget(self.stopserver_btn)
+		
 		self.verticalLayout_2.addLayout(self.verticalLayout)
 
 		self.retranslateUi(Form)
@@ -54,10 +59,11 @@ class Ui_Form(QtGui.QWidget):
 		self.startserver_btn.setToolTip(_translate("Form", "Click to start the bluetooth server", None))
 		self.startserver_btn.setText(_translate("Form", "Start PiScout Server", None))
 		self.startserver_btn.clicked.connect(self.bluetooth_server)
+		self.stopserver_btn.clicked.connect(self.bluetooth_server(kill=True))
 
 	queue = Queue()
-	
-	def bluetooth_server(self):
+	kill = False
+	def bluetooth_server(self,kill):
 	    print('started new thread for server')
 	    server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 	
@@ -69,7 +75,7 @@ class Ui_Form(QtGui.QWidget):
 	
 		#figure out how to add a button to break from this loop
 		#also make it so that this doesnt cause the GUI to hang
-	    while True:
+	    while kill == False:
 	        client_socket, client_info = server_socket.accept();
 	        name = bluetooth.lookup_name(client_info[0], 4)
 	        print('accepted connection from', name);

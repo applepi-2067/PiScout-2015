@@ -13,6 +13,7 @@ from threading import Thread
 from time import sleep
 import bluetooth
 import sys
+import random
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -66,12 +67,31 @@ class Ui_Form(QtGui.QWidget):
 		self.stopserver_btn.setToolTip(_translate("Form", "Click to stop the bluetooth server", None))
 		self.stopserver_btn.setText(_translate("Form", "Stop PiScout Server", None))
 		self.stopserver_btn.clicked.connect(self.kill_server)
+		
+		self.progressBar = QtGui.QProgressBar(self)
+		self.progressBar.setMaximum(100)
+		self.progressBar.setProperty("value", 0)
+		self.progressBar.setObjectName(_fromUtf8("progressBar"))
+		self.verticalLayout.addWidget(self.progressBar)
+		#pleb timer for pbar
+		self.timer = QtCore.QBasicTimer()
+		self.step = 0
 
 	def kill_server(self):
 		self.kill = True
-                
+		while self.step > 0:
+			sleep(.01)
+			self.timer.start(100, self)
+			self.step = self.step - 1
+			self.progressBar.setProperty("value", self.step)
+
 	def start_bluetooth_server(self):
 		Thread(target = self.bluetooth_server).start()
+		while self.step < 100:
+			sleep(.01)
+			self.timer.start(100, self)
+			self.step = self.step + 1
+			self.progressBar.setProperty("value", self.step)
 		
 	def bluetooth_server(self):
 		self.kill = False

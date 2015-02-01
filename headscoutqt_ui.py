@@ -62,50 +62,52 @@ class Ui_Form(QtGui.QWidget):
 		self.stopserver_btn.clicked.connect(self.bluetooth_server(kill=True))
 
 	queue = Queue()
-	kill = False
 	def bluetooth_server(self,kill):
-	    print('started new thread for server')
-	    server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+		print('started new thread for server')
+		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 	
-	    server_socket.bind(("", 27))
-	    print('server started')
+		server_socket.bind(("", 27))
+		print('server started')
 	
-	    server_socket.listen(2)
-	    print('listening for clients')
+		server_socket.listen(2)
+		print('listening for clients')
 	
 		#figure out how to add a button to break from this loop
 		#also make it so that this doesnt cause the GUI to hang
-	    while kill == False:
-	        client_socket, client_info = server_socket.accept();
-	        name = bluetooth.lookup_name(client_info[0], 4)
-	        print('accepted connection from', name);
-	        Thread(target = client_handler, args = [client_socket, name]).start()
+		def clientsearch(server_socket,kill):
+			while kill == False:
+				client_socket, client_info = server_socket.accept();
+				name = bluetooth.lookup_name(client_info[0], 4)
+				print('accepted connection from', name);
+				Thread(target = client_handler, args = [client_socket, name]).start()
+		
+		clientsearch(server_socket,kill)
 	
-	    #what to heck is this trash
+		#what to heck is this trash
 		#data = client_socket.recv(1024);
-	    #print("received:", data)
+		#print("received:", data)
 		#client_socket.close()
 	
-	    server_socket.close()
+		server_socket.close()
 	
 	def client_handler(client_socket, name):
-	    print('started new thread for client', name)
-	    while True:
-	        data = client_socket.recv(1024)
-	        if len(data) > 1:
-	            print('%s: %s' % (name, data))
-	            
-	            if data == 'close':
-	                client_socket.close()
-	                print('disconnected from', name)
-	                break
-	            
-	            queue.put(data)
-	            print('data added to queue')
+		print('started new thread for client', name)
+		while True:
+			data = client_socket.recv(1024)
+			if len(data) > 1:
+				print('%s: %s' % (name, data))
+				
+				if data == 'close':
+					client_socket.close()
+					print('disconnected from', name)
+					break
+				
+				queue.put(data)
+				print('data added to queue')
 	
 	
 	def update_data(data):
-	    print('processing data: ', data)
+		print('processing data: ', data)
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

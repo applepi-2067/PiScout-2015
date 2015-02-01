@@ -44,7 +44,7 @@ class Ui_Form(QtGui.QWidget):
 		self.addpt_btn = QtGui.QPushButton(Form)
 		self.addpt_btn.setObjectName(_fromUtf8("addpt_btn"))
 		self.verticalLayout.addWidget(self.addpt_btn)
-				self.addpt_btn = QtGui.QPushButton(Form)
+		self.addpt_btn = QtGui.QPushButton(Form)
 		self.sync_btn.setObjectName(_fromUtf8("sync_btn"))
 		self.verticalLayout.addWidget(self.sync_btn)
 		self.verticalLayout_2.addLayout(self.verticalLayout)

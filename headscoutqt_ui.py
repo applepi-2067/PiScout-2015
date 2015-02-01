@@ -10,6 +10,7 @@
 from PyQt4 import QtCore, QtGui
 from queue import Queue
 from threading import Thread
+from time import sleep
 import bluetooth
 import sys
 
@@ -58,11 +59,23 @@ class Ui_Form(QtGui.QWidget):
 		Form.setWindowTitle(_translate("Form", "PiScout BT Server", None))
 		self.startserver_btn.setToolTip(_translate("Form", "Click to start the bluetooth server", None))
 		self.startserver_btn.setText(_translate("Form", "Start PiScout Server", None))
-		self.startserver_btn.clicked.connect(self.bluetooth_server)
-		self.stopserver_btn.clicked.connect(self.bluetooth_server(kill=True))
+		self.startserver_btn.clicked.connect(self.start_bluetooth_server)
+		self.stopserver_btn.clicked.connect(self.kill_server)
+		global kill #can i do this
+		kill = False
 
-	queue = Queue()
-	def bluetooth_server(self,kill):
+	def kill_server(self):
+		global kill
+		kill = True
+                
+	def start_bluetooth_server(self):
+		Thread(target = self.bluetooth_server).start()
+		
+	queue = Queue() #suspicious as heck, not sure if this will get called ever (idk how to python)
+	def bluetooth_server(self):
+		global kill
+		kill = false
+		
 		print('started new thread for server')
 		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 	
@@ -74,15 +87,18 @@ class Ui_Form(QtGui.QWidget):
 	
 		#figure out how to add a button to break from this loop
 		#also make it so that this doesnt cause the GUI to hang
-		def clientsearch(server_socket,kill):
-			while kill == False:
+		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
+		
+		while kill == False:
+			try:
 				client_socket, client_info = server_socket.accept();
 				name = bluetooth.lookup_name(client_info[0], 4)
 				print('accepted connection from', name);
-				Thread(target = client_handler, args = [client_socket, name]).start()
-		
-		clientsearch(server_socket,kill)
-	
+				Thread(target = self.client_handler, args = [client_socket, name]).start()		
+			except: #will throw exceptions constantly until client is found (i hope)
+				sleep(0.2) 
+				
+		print('closing server')
 		#what to heck is this trash
 		#data = client_socket.recv(1024);
 		#print("received:", data)

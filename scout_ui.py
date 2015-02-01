@@ -8,8 +8,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from threading import Thread
 import sys
 import os.path
+import bluetooth
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -29,6 +31,7 @@ class Ui_Form(QtGui.QWidget):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
 		self.server_address = None
+		self.sync_done = True
 		self.setupUi(self)
 		
 	def setupUi(self, Form):
@@ -59,7 +62,7 @@ class Ui_Form(QtGui.QWidget):
 		self.addpt_btn.setText(_translate("Form", "Add point", None))
 		self.addpt_btn.clicked.connect(self.addpt)
 		self.sync_btn.setText(_translate("Form", "Sync with server", None))
-		self.sync_btn.clicked.connect(self.sync)
+		self.sync_btn.clicked.connect(self.start_sync)
 	
 	def openfile(self):
 		try:
@@ -85,24 +88,30 @@ class Ui_Form(QtGui.QWidget):
 				f.truncate()
 				with open('points.txt','w+', encoding='ASCII') as f:
 					f.write('1')
-					
+	
+	def start_sync(self):
+		if not self.sync_done:
+			return
+		self.sync_done = False
+		Thread(target = self.sync).start()
+		
 	def sync(self):
 		print('searching for server')
 		nearby_devices = bluetooth.discover_devices()
 
 		for address in nearby_devices:
 			if bluetooth.lookup_name(address, 8) == 'APPLEPI-PC': #CHANGE TO SERVER NAME
-				server_address = address
+				self.server_address = address
 				break
 
-		if server_address is not None:
-			print('found server with address', server_address)
+		if self.server_address is not None:
+			print('found server with address', self.server_address)
 		else:
 			print('could not find server')
 			return
 
 		socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-		socket.connect((server_address, 27))
+		socket.connect((self.server_address, 27))
 		print('successfully connected to server')
 
 		msg = 'ohai'

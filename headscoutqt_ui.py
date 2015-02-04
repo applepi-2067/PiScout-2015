@@ -89,6 +89,10 @@ class Ui_Form(QtGui.QWidget):
 		self.addpoint_btn = QtGui.QPushButton(Form)
 		self.addpoint_btn.setObjectName(_fromUtf8("addpoint_btn"))
 		self.verticalLayout.addWidget(self.addpoint_btn)
+		#readcsv
+		self.readcsv_btn = QtGui.QPushButton(Form)
+		self.readcsv_btn.setObjectName(_fromUtf8("readcsv_btn"))
+		self.verticalLayout.addWidget(self.readcsv_btn)
 		
 		self.verticalLayout_2.addLayout(self.verticalLayout)
 
@@ -118,6 +122,9 @@ class Ui_Form(QtGui.QWidget):
 		#add point button
 		self.addpoint_btn.setText(_translate("Form", "Add point", None))
 		self.addpoint_btn.clicked.connect(self.addpoint)
+		#read csv
+		self.readcsv_btn.setText(_translate("Form", "Read points.csv", None))
+		self.readcsv_btn.clicked.connect(self.readcsv)
 		
 	def kill_server(self):
 		self.kill = True
@@ -195,6 +202,15 @@ class Ui_Form(QtGui.QWidget):
 	#points system block thing
 	
 	def addpoint(self):
+		with open('points.csv', 'w+', newline='') as csvfile:
+			pointscsv = csv.reader(csvfile, delimiter=' ', quotechar='|')
+			for row in pointscsv:
+				print(row)
+			writecsv = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+			#userin = input('Please input some STUFF you want to put in the file\n')
+			writecsv.writerow(['meme'] * 5)
+			
+	def readcsv(self):
 		with open('points.csv', newline='') as csvfile:
 			pointscsv = csv.reader(csvfile, delimiter=' ', quotechar='|')
 			for row in pointscsv:

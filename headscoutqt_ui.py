@@ -14,6 +14,7 @@ from time import sleep
 import bluetooth
 import sys
 import random
+import csv
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -194,7 +195,10 @@ class Ui_Form(QtGui.QWidget):
 	#points system block thing
 	
 	def addpoint(self):
-		pass
+		with open('points.csv', newline='') as csvfile:
+			pointscsv = csv.reader(csvfile, delimiter=' ', quotechar='|')
+			for row in pointscsv:
+				print(row)
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

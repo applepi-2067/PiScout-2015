@@ -217,11 +217,10 @@ class Ui_Form(QtGui.QWidget):
 		pass
 	
 	def submitcsv(self):
-		with open('points.csv', 'at', newline='') as csvfile:
-			pointscsv = csv.reader(csvfile, delimiter=' ', quotechar='|')
-			writecsv = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+		with open('points.csv', 'at') as csvfile:
+			writecsv = csv.DictWriter(csvfile)
 			csvinput = self.textcsvin.text()
-			#userin = input('Please input some STUFF you want to put in the file\n')
+			writecsv.writeheader()
 			writecsv.writerow([csvinput])
 			
 	def readcsv(self):

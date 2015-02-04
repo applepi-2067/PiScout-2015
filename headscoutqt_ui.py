@@ -39,24 +39,55 @@ class Ui_Form(QtGui.QWidget):
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8("Form"))
 		Form.resize(400, 300)
-		Form.setStyleSheet(_fromUtf8("#Form {"
-		"background: grey; }"
-		"#verticalLayout {border: 3px solid gray; border-radius: 40px; background: white;}"
+		Form.setStyleSheet(_fromUtf8('''
+		#Form {
+			background: grey; 
+		}
+		#verticalLayout {
+			border: 3px solid gray; border-radius: 40px; background: white;
+		}
+		
+		QPushButton  {
+			background-color:#599bb3;
+			border-radius:8px;
+			color:#ffffff;
+			font-family:arial;
+			font-size:20px;
+			font-weight:bold;
+			padding:13px 32px;
+			text-decoration:none;
+			}
+			QPushButton :hover {
+				background-color:#408c99;
+			}
+			
+			QPushButton :active {
+				position:relative;
+				top:1px;
+			}
+		
+		'''
+		
 		))
 
 		self.verticalLayout_2 = QtGui.QVBoxLayout(Form)
 		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 		self.verticalLayout = QtGui.QVBoxLayout()
 		self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+		#server start button
 		self.startserver_btn = QtGui.QPushButton(Form)
 		self.startserver_btn.setAutoDefault(True)
 		self.startserver_btn.setDefault(True)
 		self.startserver_btn.setObjectName(_fromUtf8("startserver_btn"))
 		self.verticalLayout.addWidget(self.startserver_btn)
-		
+		#server stop button
 		self.stopserver_btn = QtGui.QPushButton(Form)
 		self.stopserver_btn.setObjectName(_fromUtf8("stopserver_btn"))
 		self.verticalLayout.addWidget(self.stopserver_btn)
+		#add point button
+		self.addpoint_btn = QtGui.QPushButton(Form)
+		self.addpoint_btn.setObjectName(_fromUtf8("addpoint_btn"))
+		self.verticalLayout.addWidget(self.addpoint_btn)
 		
 		self.verticalLayout_2.addLayout(self.verticalLayout)
 
@@ -64,15 +95,17 @@ class Ui_Form(QtGui.QWidget):
 		QtCore.QMetaObject.connectSlotsByName(Form)
 
 	def retranslateUi(self, Form):
+		#window title
 		Form.setWindowTitle(_translate("Form", "PiScout BT Server", None))
+		#start server humaization thing
 		self.startserver_btn.setToolTip(_translate("Form", "Click to start the bluetooth server", None))
 		self.startserver_btn.setText(_translate("Form", "Start PiScout Server", None))
 		self.startserver_btn.clicked.connect(self.start_bluetooth_server)
-		
+		#stop server humanizing text
 		self.stopserver_btn.setToolTip(_translate("Form", "Click to stop the bluetooth server", None))
 		self.stopserver_btn.setText(_translate("Form", "Stop PiScout Server", None))
 		self.stopserver_btn.clicked.connect(self.kill_server)
-		
+		#baller progress bar
 		self.progressBar = QtGui.QProgressBar(self)
 		self.progressBar.setMaximum(100)
 		self.progressBar.setProperty("value", 0)
@@ -81,7 +114,10 @@ class Ui_Form(QtGui.QWidget):
 		#pleb timer for pbar
 		self.timer = QtCore.QBasicTimer()
 		self.step = 0
-
+		#add point button
+		self.addpoint_btn.setText(_translate("Form", "Add point", None))
+		self.addpoint_btn.clicked.connect(self.addpoint)
+		
 	def kill_server(self):
 		self.kill = True
 		while self.step > 0:
@@ -154,6 +190,11 @@ class Ui_Form(QtGui.QWidget):
 	
 	def process(self, data):
 		print('processing data: ', data)
+	
+	#points system block thing
+	
+	def addpoint(self):
+		pass
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

@@ -15,6 +15,7 @@ import bluetooth
 import sys
 import random
 import csv
+#import pandas as pd
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -216,18 +217,25 @@ class Ui_Form(QtGui.QWidget):
 		pass
 	
 	def submitcsv(self):
-		with open('points.csv', 'w+', newline='') as csvfile:
+		with open('points.csv', 'at', newline='') as csvfile:
 			pointscsv = csv.reader(csvfile, delimiter=' ', quotechar='|')
 			writecsv = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 			csvinput = self.textcsvin.text()
 			#userin = input('Please input some STUFF you want to put in the file\n')
-			writecsv.writerow([csvinput] * 3)
+			writecsv.writerow([csvinput])
 			
 	def readcsv(self):
-		with open('points.csv', newline='') as csvfile:
-			pointscsv = csv.reader(csvfile, delimiter=' ', quotechar='|')
+		with open('points.csv', 'r') as csvfile:
+			pointscsv = csv.DictReader(csvfile)
 			for row in pointscsv:
-				print(row)
+				print(row['Match'],row['Team Number'],row['Points'])
+			print('--------')
+			csvfile.close()
+			#experimental pandas stuff ignoreplz
+			#pointscsv = pd.read_csv(csvfile)
+			#names = df.Names
+			#print(names)
+
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

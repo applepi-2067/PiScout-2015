@@ -15,7 +15,6 @@ import bluetooth
 import sys
 import random
 import csv
-#import pandas as pd
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -168,8 +167,12 @@ class Ui_Form(QtGui.QWidget):
 		#input button
 		self.buttonsubmit.setText(_translate("Form", "put text", None))
 		self.buttonsubmit.clicked.connect(self.submitcsv)
+		#warning/message box
+		# msgBox = QtGui.QMessageBox()
+		# msgBox.setText('Error: You entered non-numeric input')
+		# msgBox.addButton(QtGui.QPushButton('O.K.'), QtGui.QMessageBox.YesRole)
+		# ret = msgBox.exec_()
 
-		
 	def kill_server(self):
 		self.kill = True
 		while self.step > 0:
@@ -242,18 +245,6 @@ class Ui_Form(QtGui.QWidget):
 	
 	def process(self, data):
 		print('processing data: ', data)
-	
-	#points system block thing
-	#def addpoint(self):
-	#	pass
-	
-	#passing multiple values into a function via Qt is impossibly hard so ill just make several different functions
-	def submitcsv(self):
-		with open('points.csv', 'at') as csvfile:
-			writecsv = csv.DictWriter(csvfile)
-			csvinput = self.textcsvin.text()
-			writecsv.writeheader()
-			writecsv.writerow([csivnput])
 			
 	def readcsv(self):
 		with open('points.csv', 'r') as csvfile:
@@ -262,10 +253,63 @@ class Ui_Form(QtGui.QWidget):
 				print(row['Match'],row['Team Number'],row['Points'])
 			print('--------')
 			csvfile.close()
-			#experimental pandas stuff ignoreplz
-			#pointscsv = pd.read_csv(csvfile)
-			#names = df.Names
-			#print(names)
+
+	#warning box
+	def nonnumessage(self):
+			msgBox = QtGui.QMessageBox()
+			msgBox.setText('Error: You entered non-numeric input')
+			msgBox.addButton(QtGui.QPushButton('O.K.'), QtGui.QMessageBox.YesRole)
+			ret = msgBox.exec_()
+
+
+	#3x box grabbing functions
+
+	def pointsedit_fn(self):
+		csvinput = self.pointsedit.text()
+		if csvinput.isnumeric():
+			return csvinput
+		else:
+			self.nonnumessage()
+			return False
+
+	def teamedit_fn(self):
+		csvinput = self.teamedit.text()
+		if csvinput.isnumeric():
+			return csvinput
+		else:
+			self.nonnumessage()
+			return False
+
+	def matchedit_fn(self):
+		csvinput = self.matchedit.text()
+		if csvinput.isnumeric():
+			return csvinput
+		else:
+			self.nonnumessage()
+			return False
+
+	def csvchecker(self):
+		csvpoints = self.pointsedit_fn()
+		csvteam = self.teamedit_fn()
+		csvmatch = self.matchedit_fn()
+		csvcheckl = [csvpoints,csvteam,csvmatch]
+		for out in csvcheckl:
+			if out == False:
+				self.nonnumessage()
+			else:
+				return csvcheckl
+
+	#CSV submission block
+	def submitcsv(self):
+		csvpoints = self.csvchecker()[0]
+		csvteam = self.csvchecker()[1]
+		csvmatch = self.csvchecker()[2]
+		fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
+		with open('points.csv', 'at') as csvfile:
+			fieldnames = ['Match', 'Team Number', 'Points']
+			writecsv = csv.DictWriter(csvfile, fieldnames)
+			writecsv.writeheader()
+			writecsv.writerow(fcsvinput)
 
 
 if __name__ == '__main__':

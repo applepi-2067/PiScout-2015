@@ -75,30 +75,24 @@ class Ui_Form(QtGui.QWidget):
 		self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
 		self.verticalLayout = QtGui.QVBoxLayout()
 		self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+
 		#server start button
 		self.startserver_btn = QtGui.QPushButton(Form)
 		self.startserver_btn.setAutoDefault(True)
 		self.startserver_btn.setDefault(True)
 		self.startserver_btn.setObjectName(_fromUtf8("startserver_btn"))
 		self.verticalLayout.addWidget(self.startserver_btn)
+
 		#server stop button
 		self.stopserver_btn = QtGui.QPushButton(Form)
 		self.stopserver_btn.setObjectName(_fromUtf8("stopserver_btn"))
 		self.verticalLayout.addWidget(self.stopserver_btn)
-		#add point button
-		#self.addpoint_btn = QtGui.QPushButton(Form)
-		#self.addpoint_btn.setObjectName(_fromUtf8("addpoint_btn"))
-		#self.verticalLayout.addWidget(self.addpoint_btn)
+
 		#readcsv
 		self.readcsv_btn = QtGui.QPushButton(Form)
 		self.readcsv_btn.setObjectName(_fromUtf8("readcsv_btn"))
 		self.verticalLayout.addWidget(self.readcsv_btn)
-		#csv input form line (being deprecated pls wait)
-		self.textcsvin = QtGui.QLineEdit(Form)
-		self.textcsvin.setObjectName(_fromUtf8("text"))
-		self.verticalLayout.addWidget(self.textcsvin)
 
-		# self.verticalLayout_2.addLayout(self.verticalLayout)
 		#csv entry forms
 		self.horizontalLayout = QtGui.QHBoxLayout()
 		self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
@@ -121,6 +115,7 @@ class Ui_Form(QtGui.QWidget):
 		self.pointspin.setObjectName(_fromUtf8("pointspin"))
 		self.horizontalLayout.addWidget(self.pointspin)
 		self.verticalLayout.addLayout(self.horizontalLayout)
+
 		#csv input button
 		self.buttonsubmit = QtGui.QPushButton(Form)
 		self.buttonsubmit.setObjectName(_fromUtf8("buttonsubmit"))
@@ -134,26 +129,28 @@ class Ui_Form(QtGui.QWidget):
 	def retranslateUi(self, Form):
 		#window title
 		Form.setWindowTitle(_translate("Form", "PiScout BT Server", None))
+
 		#start server humaization thing
 		self.startserver_btn.setToolTip(_translate("Form", "Click to start the bluetooth server", None))
 		self.startserver_btn.setText(_translate("Form", "Start PiScout Server", None))
 		self.startserver_btn.clicked.connect(self.start_bluetooth_server)
+
 		#stop server humanizing text
 		self.stopserver_btn.setToolTip(_translate("Form", "Click to stop the bluetooth server", None))
 		self.stopserver_btn.setText(_translate("Form", "Stop PiScout Server", None))
 		self.stopserver_btn.clicked.connect(self.kill_server)
+
 		#baller progress bar
 		self.progressBar = QtGui.QProgressBar(self)
 		self.progressBar.setMaximum(100)
 		self.progressBar.setProperty("value", 0)
 		self.progressBar.setObjectName(_fromUtf8("progressBar"))
 		self.verticalLayout.addWidget(self.progressBar)
+
 		#pleb timer for pbar
 		self.timer = QtCore.QBasicTimer()
 		self.step = 0
-		#add point button
-		#self.addpoint_btn.setText(_translate("Form", "Add point", None))
-		#self.addpoint_btn.clicked.connect(self.addpoint)
+
 		#read csv
 		self.readcsv_btn.setText(_translate("Form", "Read points.csv", None))
 		self.readcsv_btn.clicked.connect(self.readcsv)
@@ -162,16 +159,10 @@ class Ui_Form(QtGui.QWidget):
 		self.matchedit.setPlaceholderText(_translate("Form", "Match number", None))
 		self.teamedit.setPlaceholderText(_translate("Form", "Team Number", None))
 		self.pointsedit.setPlaceholderText(_translate("Form", "Points", None))
-		#vertical one (real working one that will be deprecated)
-		self.textcsvin.setPlaceholderText(_translate("Form", "Match, Team#, Points - Use this one!", None))
+
 		#input button
 		self.buttonsubmit.setText(_translate("Form", "put text", None))
 		self.buttonsubmit.clicked.connect(self.submitcsv)
-		#warning/message box
-		# msgBox = QtGui.QMessageBox()
-		# msgBox.setText('Error: You entered non-numeric input')
-		# msgBox.addButton(QtGui.QPushButton('O.K.'), QtGui.QMessageBox.YesRole)
-		# ret = msgBox.exec_()
 
 	def kill_server(self):
 		self.kill = True
@@ -255,9 +246,23 @@ class Ui_Form(QtGui.QWidget):
 			csvfile.close()
 
 	#warning box
-	def nonnumessage(self):
+	#errors: 0 = success
+	# 1 = bad match
+	# 2 = bad team
+	# 3 = bad points
+	# 4 = unknown
+	def nonnumessage(self, errno):
 			msgBox = QtGui.QMessageBox()
-			msgBox.setText('Error: You entered non-numeric input')
+			if errno == 0:
+				msgBox.setText('Write success.')
+			elif errno == 1:
+				msgBox.setText('Error: You entered non-numeric input for "Match"')
+			elif errno == 2:
+				msgBox.setText('Error: You entered non-numeric input for "Team Number"')
+			elif errno == 3:
+				msgBox.setText('Error: You entered non-numeric input for "Points"')
+			elif errno == None:
+				msgBox.setText('Error: Unknown error')
 			msgBox.addButton(QtGui.QPushButton('O.K.'), QtGui.QMessageBox.YesRole)
 			ret = msgBox.exec_()
 
@@ -269,7 +274,7 @@ class Ui_Form(QtGui.QWidget):
 		if csvinput.isnumeric():
 			return csvinput
 		else:
-			self.nonnumessage()
+			self.nonnumessage(3)
 			return False
 
 	def teamedit_fn(self):
@@ -277,7 +282,7 @@ class Ui_Form(QtGui.QWidget):
 		if csvinput.isnumeric():
 			return csvinput
 		else:
-			self.nonnumessage()
+			self.nonnumessage(2)
 			return False
 
 	def matchedit_fn(self):
@@ -285,31 +290,28 @@ class Ui_Form(QtGui.QWidget):
 		if csvinput.isnumeric():
 			return csvinput
 		else:
-			self.nonnumessage()
+			self.nonnumessage(1)
 			return False
-
-	def csvchecker(self):
-		csvpoints = self.pointsedit_fn()
-		csvteam = self.teamedit_fn()
-		csvmatch = self.matchedit_fn()
-		csvcheckl = [csvpoints,csvteam,csvmatch]
-		for out in csvcheckl:
-			if out == False:
-				self.nonnumessage()
-			else:
-				return csvcheckl
 
 	#CSV submission block
 	def submitcsv(self):
-		csvpoints = self.csvchecker()[0]
-		csvteam = self.csvchecker()[1]
-		csvmatch = self.csvchecker()[2]
-		fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
-		with open('points.csv', 'at') as csvfile:
-			fieldnames = ['Match', 'Team Number', 'Points']
-			writecsv = csv.DictWriter(csvfile, fieldnames)
-			writecsv.writeheader()
-			writecsv.writerow(fcsvinput)
+		csvpoints = self.pointsedit_fn()
+		csvteam = self.teamedit_fn()
+		csvmatch = self.matchedit_fn()
+		if csvpoints == False:
+			pass
+		elif csvteam == False:
+			pass
+		elif csvmatch == False:
+			pass
+		else:
+			fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
+			with open('points.csv', 'at') as csvfile:
+				fieldnames = ['Match', 'Team Number', 'Points']
+				writecsv = csv.DictWriter(csvfile, fieldnames)
+				writecsv.writeheader()
+				writecsv.writerow(fcsvinput)
+				self.nonnumessage(0)
 
 
 if __name__ == '__main__':

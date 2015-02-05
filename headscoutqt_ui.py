@@ -49,7 +49,7 @@ class Ui_Form(QtGui.QWidget):
 			border: 3px solid gray; border-radius: 40px; background: white;
 		}
 		
-		QPushButton  {
+		QPushButton	 {
 			background-color:#599bb3;
 			border-radius:8px;
 			color:#ffffff;
@@ -87,22 +87,46 @@ class Ui_Form(QtGui.QWidget):
 		self.stopserver_btn.setObjectName(_fromUtf8("stopserver_btn"))
 		self.verticalLayout.addWidget(self.stopserver_btn)
 		#add point button
-		self.addpoint_btn = QtGui.QPushButton(Form)
-		self.addpoint_btn.setObjectName(_fromUtf8("addpoint_btn"))
-		self.verticalLayout.addWidget(self.addpoint_btn)
+		#self.addpoint_btn = QtGui.QPushButton(Form)
+		#self.addpoint_btn.setObjectName(_fromUtf8("addpoint_btn"))
+		#self.verticalLayout.addWidget(self.addpoint_btn)
 		#readcsv
 		self.readcsv_btn = QtGui.QPushButton(Form)
 		self.readcsv_btn.setObjectName(_fromUtf8("readcsv_btn"))
 		self.verticalLayout.addWidget(self.readcsv_btn)
-		#csv input form line
+		#csv input form line (being deprecated pls wait)
 		self.textcsvin = QtGui.QLineEdit(Form)
 		self.textcsvin.setObjectName(_fromUtf8("text"))
 		self.verticalLayout.addWidget(self.textcsvin)
+
+		# self.verticalLayout_2.addLayout(self.verticalLayout)
+		#csv entry forms
+		self.horizontalLayout = QtGui.QHBoxLayout()
+		self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+		self.matchedit = QtGui.QLineEdit(Form)
+		self.matchedit.setObjectName(_fromUtf8("matchedit"))
+		self.horizontalLayout.addWidget(self.matchedit)
+		self.matchspin = QtGui.QSpinBox(Form)
+		self.matchspin.setObjectName(_fromUtf8("matchspin"))
+		self.horizontalLayout.addWidget(self.matchspin)
+		self.teamedit = QtGui.QLineEdit(Form)
+		self.teamedit.setObjectName(_fromUtf8("teamedit"))
+		self.horizontalLayout.addWidget(self.teamedit)
+		self.teamspin = QtGui.QSpinBox(Form)
+		self.teamspin.setObjectName(_fromUtf8("teamspin"))
+		self.horizontalLayout.addWidget(self.teamspin)
+		self.pointsedit = QtGui.QLineEdit(Form)
+		self.pointsedit.setObjectName(_fromUtf8("pointsedit"))
+		self.horizontalLayout.addWidget(self.pointsedit)
+		self.pointspin = QtGui.QSpinBox(Form)
+		self.pointspin.setObjectName(_fromUtf8("pointspin"))
+		self.horizontalLayout.addWidget(self.pointspin)
+		self.verticalLayout.addLayout(self.horizontalLayout)
 		#csv input button
 		self.buttonsubmit = QtGui.QPushButton(Form)
 		self.buttonsubmit.setObjectName(_fromUtf8("buttonsubmit"))
 		self.verticalLayout.addWidget(self.buttonsubmit)
-
+		
 		self.verticalLayout_2.addLayout(self.verticalLayout)
 
 		self.retranslateUi(Form)
@@ -129,11 +153,18 @@ class Ui_Form(QtGui.QWidget):
 		self.timer = QtCore.QBasicTimer()
 		self.step = 0
 		#add point button
-		self.addpoint_btn.setText(_translate("Form", "Add point", None))
-		self.addpoint_btn.clicked.connect(self.addpoint)
+		#self.addpoint_btn.setText(_translate("Form", "Add point", None))
+		#self.addpoint_btn.clicked.connect(self.addpoint)
 		#read csv
 		self.readcsv_btn.setText(_translate("Form", "Read points.csv", None))
 		self.readcsv_btn.clicked.connect(self.readcsv)
+
+		#csv text entry lines
+		self.matchedit.setPlaceholderText(_translate("Form", "Match number", None))
+		self.teamedit.setPlaceholderText(_translate("Form", "Team Number", None))
+		self.pointsedit.setPlaceholderText(_translate("Form", "Points", None))
+		#vertical one (real working one that will be deprecated)
+		self.textcsvin.setPlaceholderText(_translate("Form", "Match, Team#, Points - Use this one!", None))
 		#input button
 		self.buttonsubmit.setText(_translate("Form", "put text", None))
 		self.buttonsubmit.clicked.connect(self.submitcsv)
@@ -213,15 +244,16 @@ class Ui_Form(QtGui.QWidget):
 		print('processing data: ', data)
 	
 	#points system block thing
-	def addpoint(self):
-		pass
+	#def addpoint(self):
+	#	pass
 	
+	#passing multiple values into a function via Qt is impossibly hard so ill just make several different functions
 	def submitcsv(self):
 		with open('points.csv', 'at') as csvfile:
 			writecsv = csv.DictWriter(csvfile)
 			csvinput = self.textcsvin.text()
 			writecsv.writeheader()
-			writecsv.writerow([csvinput])
+			writecsv.writerow([csivnput])
 			
 	def readcsv(self):
 		with open('points.csv', 'r') as csvfile:

@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from os.path import isfile
 from queue import Queue
 from threading import Thread
 from time import sleep
@@ -15,6 +16,7 @@ import bluetooth
 import sys
 import random
 import csv
+from os.path import isfile
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -224,7 +226,6 @@ class Ui_Form(QtGui.QWidget):
 			data = client_socket.recv(1024)
 			if len(data) > 1:
 				print('%s: %s' % (name, data))
-				
 				if data == 'close':
 					client_socket.close()
 					print('disconnected from', name)
@@ -238,6 +239,9 @@ class Ui_Form(QtGui.QWidget):
 		print('processing data: ', data)
 			
 	def readcsv(self):
+		if not isfile('points.csv'):
+			self.errmessage(4)
+			return
 		with open('points.csv', 'r') as csvfile:
 			pointscsv = csv.DictReader(csvfile)
 			for row in pointscsv:
@@ -250,8 +254,9 @@ class Ui_Form(QtGui.QWidget):
 	# 1 = bad match
 	# 2 = bad team
 	# 3 = bad points
-	# 4 = unknown
-	def nonnumessage(self, errno):
+	# 4 = doesn't exist
+	# any other value: unknown
+	def errmessage(self, errno): 
 			msgBox = QtGui.QMessageBox()
 			if errno == 0:
 				msgBox.setText('Write success.')
@@ -261,9 +266,11 @@ class Ui_Form(QtGui.QWidget):
 				msgBox.setText('Error: You entered non-numeric input for "Team Number"')
 			elif errno == 3:
 				msgBox.setText('Error: You entered non-numeric input for "Points"')
-			elif errno == None:
+			elif errno == 4:
+				msgBox.setText('Error: file does not exist\nSubmit some data to create a new file')
+			else:
 				msgBox.setText('Error: Unknown error')
-			msgBox.addButton(QtGui.QPushButton('O.K.'), QtGui.QMessageBox.YesRole)
+			msgBox.addButton(QtGui.QPushButton('OK'), QtGui.QMessageBox.YesRole)
 			ret = msgBox.exec_()
 
 
@@ -274,7 +281,7 @@ class Ui_Form(QtGui.QWidget):
 		if csvinput.isnumeric():
 			return csvinput
 		else:
-			self.nonnumessage(3)
+			self.errmessage(3)
 			return False
 
 	def teamedit_fn(self):
@@ -282,7 +289,7 @@ class Ui_Form(QtGui.QWidget):
 		if csvinput.isnumeric():
 			return csvinput
 		else:
-			self.nonnumessage(2)
+			self.errmessage(2)
 			return False
 
 	def matchedit_fn(self):
@@ -290,7 +297,7 @@ class Ui_Form(QtGui.QWidget):
 		if csvinput.isnumeric():
 			return csvinput
 		else:
-			self.nonnumessage(1)
+			self.errmessage(1)
 			return False
 
 	#CSV submission block
@@ -305,13 +312,15 @@ class Ui_Form(QtGui.QWidget):
 		elif csvmatch == False:
 			pass
 		else:
+			created = not isfile('points.csv')
 			fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
 			with open('points.csv', 'at') as csvfile:
 				fieldnames = ['Match', 'Team Number', 'Points']
 				writecsv = csv.DictWriter(csvfile, fieldnames)
-				writecsv.writeheader()
+				if created: #only write the header if file has been newly created
+					writecsv.writeheader()
 				writecsv.writerow(fcsvinput)
-				self.nonnumessage(0)
+				self.errmessage(0)
 
 
 if __name__ == '__main__':

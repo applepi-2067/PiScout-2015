@@ -36,6 +36,7 @@ class Ui_Form(QtGui.QWidget):
 		self.setupUi(self)
 		self.kill = True
 		self.queue = Queue() #queue for incoming client data
+		self.FIELDNAMES = ['Match', 'Team Number', 'Points']
 
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8("Form"))
@@ -205,11 +206,14 @@ class Ui_Form(QtGui.QWidget):
 				Thread(target = self.client_handler, args = [client_socket, name]).start()
 			except: #will throw exceptions constantly until client is found (i hope)
 				sleep(0.2)
-
 			#in server main loop, also process the data from the clients
-			if not self.queue.empty():
-				print('reading data from queue')
-				self.process(self.queue.get())
+			if self.queue.empty():
+				continue
+
+			print('writing data to file')
+			self.writecsv(self.queue.get())
+			# a queue is used here to ensure that two clients on different
+			# threads cannot attempt to modify points.csv at the same time
 
 		print('closing server')
 		#what to heck is this trash
@@ -222,19 +226,18 @@ class Ui_Form(QtGui.QWidget):
 	def client_handler(self, client_socket, name):
 		print('started new thread for client', name)
 		while True:
-			data = client_socket.recv(1024)
-			if len(data) > 1:
-				print('%s: %s' % (name, data))
-				if data == 'close':
+			raw = client_socket.recv(1024)
+			if len(raw) > 1:
+				print('%s: %s' % (name, raw))
+				if raw == 'close':
 					client_socket.close()
 					print('disconnected from', name)
 					break
-
-				self.queue.put(data)
+				data = self.FIELDNAMES + raw.split(',')
+				i = iter(data) #using iterators for this is cool as heck
+				processed = dict(zip(i, i)) #now it's a dict
+				self.queue.put(processed)
 				print('data added to queue')
-
-	def process(self, data):
-		print('processing data: ', data)
 
 	def readcsv(self):
 		if not isfile('points.csv'):
@@ -273,7 +276,7 @@ class Ui_Form(QtGui.QWidget):
 			#what does that variable do?
 
 	#3x box grabbing functions
-
+	#will optimize these functions later
 	def pointsedit_fn(self):
 		csvinput = self.pointsedit.text()
 		if csvinput.isnumeric():
@@ -298,27 +301,24 @@ class Ui_Form(QtGui.QWidget):
 			self.errmessage(1)
 			return False
 
-	#CSV submission block
+	#converts csv fields to dict and sends to writecsv
 	def submitcsv(self):
 		csvpoints = self.pointsedit_fn()
 		csvteam = self.teamedit_fn()
 		csvmatch = self.matchedit_fn()
-		if not csvpoints:
-			pass
-		elif not csvteam:
-			pass
-		elif not csvmatch:
-			pass
-		else:
-			created = not isfile('points.csv')
+		if csvpoints and csvteam and csvmatch:
 			fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
-			with open('points.csv', 'at') as csvfile:
-				fieldnames = ['Match', 'Team Number', 'Points']
-				writecsv = csv.DictWriter(csvfile, fieldnames)
-				if created: #only write the header if file has been newly created
-					writecsv.writeheader()
-				writecsv.writerow(fcsvinput)
-				self.errmessage(0)
+			self.writecsv(fcsvinput)
+
+	#writes a csv to file
+	def writecsv(self, csvinput):
+		created = not isfile('points.csv')
+		with open('points.csv', 'at') as csvfile:
+			writecsv = csv.DictWriter(csvfile, self.FIELDNAMES) #fieldnames is defined in __init__
+			if created: #only write the header if file has been newly created
+				writecsv.writeheader()
+			writecsv.writerow(csvinput)
+			self.errmessage(0)
 
 
 if __name__ == '__main__':

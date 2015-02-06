@@ -14,9 +14,7 @@ from threading import Thread
 from time import sleep
 import bluetooth
 import sys
-import random
 import csv
-from os.path import isfile
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -38,18 +36,18 @@ class Ui_Form(QtGui.QWidget):
 		self.setupUi(self)
 		self.kill = True
 		self.queue = Queue() #queue for incoming client data
-		
+
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8("Form"))
 		Form.resize(400, 300)
 		Form.setStyleSheet(_fromUtf8('''
 		#Form {
-			background: grey; 
+			background: grey;
 		}
 		#verticalLayout {
 			border: 3px solid gray; border-radius: 40px; background: white;
 		}
-		
+
 		QPushButton	 {
 			background-color:#599bb3;
 			border-radius:8px;
@@ -63,14 +61,14 @@ class Ui_Form(QtGui.QWidget):
 			QPushButton :hover {
 				background-color:#408c99;
 			}
-			
+
 			QPushButton :active {
 				position:relative;
 				top:1px;
 			}
-		
+
 		'''
-		
+
 		))
 
 		self.verticalLayout_2 = QtGui.QVBoxLayout(Form)
@@ -122,11 +120,12 @@ class Ui_Form(QtGui.QWidget):
 		self.buttonsubmit = QtGui.QPushButton(Form)
 		self.buttonsubmit.setObjectName(_fromUtf8("buttonsubmit"))
 		self.verticalLayout.addWidget(self.buttonsubmit)
-		
+
 		self.verticalLayout_2.addLayout(self.verticalLayout)
 
 		self.retranslateUi(Form)
 		QtCore.QMetaObject.connectSlotsByName(Form)
+		#PyCharm thinks something is whack with the above line (Parameter 'QObject' unfilled
 
 	def retranslateUi(self, Form):
 		#window title
@@ -171,7 +170,7 @@ class Ui_Form(QtGui.QWidget):
 		while self.step > 0:
 			sleep(.01)
 			self.timer.start(100, self)
-			self.step = self.step - 1
+			self.step -= 1
 			self.progressBar.setProperty("value", self.step)
 
 	def start_bluetooth_server(self):
@@ -183,43 +182,43 @@ class Ui_Form(QtGui.QWidget):
 		while self.step < 100:
 			sleep(.01)
 			self.timer.start(100, self)
-			self.step = self.step + 1
+			self.step += 1
 			self.progressBar.setProperty("value", self.step)
-		
+
 	def bluetooth_server(self):
 		self.kill = False
-		
+
 		print('started new thread for server')
 		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 		server_socket.bind(("", 27))
 		print('server started')
 		server_socket.listen(2)
 		print('listening for clients')
-	
+
 		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
-		
-		while self.kill == False:
+
+		while not self.kill:
 			try:
-				client_socket, client_info = server_socket.accept();
+				client_socket, client_info = server_socket.accept()
 				name = bluetooth.lookup_name(client_info[0], 4)
-				print('accepted connection from', name);
-				Thread(target = self.client_handler, args = [client_socket, name]).start()		
+				print('accepted connection from', name)
+				Thread(target = self.client_handler, args = [client_socket, name]).start()
 			except: #will throw exceptions constantly until client is found (i hope)
 				sleep(0.2)
-			
+
 			#in server main loop, also process the data from the clients
 			if not self.queue.empty():
 				print('reading data from queue')
 				self.process(self.queue.get())
-				
+
 		print('closing server')
 		#what to heck is this trash
 		#data = client_socket.recv(1024);
 		#print("received:", data)
 		#client_socket.close()
-	
+
 		server_socket.close()
-	
+
 	def client_handler(self, client_socket, name):
 		print('started new thread for client', name)
 		while True:
@@ -230,14 +229,13 @@ class Ui_Form(QtGui.QWidget):
 					client_socket.close()
 					print('disconnected from', name)
 					break
-				
+
 				self.queue.put(data)
 				print('data added to queue')
-	
-	
+
 	def process(self, data):
 		print('processing data: ', data)
-			
+
 	def readcsv(self):
 		if not isfile('points.csv'):
 			self.errmessage(4)
@@ -256,7 +254,7 @@ class Ui_Form(QtGui.QWidget):
 	# 3 = bad points
 	# 4 = doesn't exist
 	# any other value: unknown
-	def errmessage(self, errno): 
+	def errmessage(self, errno):
 			msgBox = QtGui.QMessageBox()
 			if errno == 0:
 				msgBox.setText('Write success.')
@@ -272,7 +270,7 @@ class Ui_Form(QtGui.QWidget):
 				msgBox.setText('Error: Unknown error')
 			msgBox.addButton(QtGui.QPushButton('OK'), QtGui.QMessageBox.YesRole)
 			ret = msgBox.exec_()
-
+			#what does that variable do?
 
 	#3x box grabbing functions
 
@@ -305,11 +303,11 @@ class Ui_Form(QtGui.QWidget):
 		csvpoints = self.pointsedit_fn()
 		csvteam = self.teamedit_fn()
 		csvmatch = self.matchedit_fn()
-		if csvpoints == False:
+		if not csvpoints:
 			pass
-		elif csvteam == False:
+		elif not csvteam:
 			pass
-		elif csvmatch == False:
+		elif not csvmatch:
 			pass
 		else:
 			created = not isfile('points.csv')

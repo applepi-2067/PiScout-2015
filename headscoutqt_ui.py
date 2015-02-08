@@ -9,7 +9,6 @@
 
 from PyQt4 import QtCore, QtGui
 from os.path import isfile
-from queue import Queue
 from threading import Thread
 from time import sleep
 import bluetooth
@@ -35,7 +34,6 @@ class Ui_Form(QtGui.QWidget):
 		QtGui.QWidget.__init__(self)
 		self.setupUi(self)
 		self.kill = True
-		self.queue = Queue() #queue for incoming client data
 		self.FIELDNAMES = ['Match', 'Team Number', 'Points']
 
 	def setupUi(self, Form):
@@ -193,52 +191,34 @@ class Ui_Form(QtGui.QWidget):
 		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 		server_socket.bind(("", 27))
 		print('server started')
-		server_socket.listen(2)
+		server_socket.listen(1)
 		print('listening for clients')
 
 		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
 
 		while not self.kill:
+			client_socket = None
 			try:
 				client_socket, client_info = server_socket.accept()
-				name = bluetooth.lookup_name(client_info[0], 4)
-				print('accepted connection from', name)
-				Thread(target = self.client_handler, args = [client_socket, name]).start()
-			except: #will throw exceptions constantly until client is found (i hope)
+			except OSError:
 				sleep(0.2)
-			#in server main loop, also process the data from the clients
-			if self.queue.empty():
 				continue
-
-			print('writing data to file')
-			self.writecsv(self.queue.get())
-			# a queue is used here to ensure that two clients on different
-			# threads cannot attempt to modify points.csv at the same time
+			name = bluetooth.lookup_name(client_info[0], 4)
+			print('accepted connection from', name)
+			data = str(client_socket.recv(2048))
+			print('received ' + data + ' from ' + name)
+			data = data[2:-1]
+			proc = {}
+			for i in range(0, len(data)):
+				proc[self.FIELDNAMES[i]] = data[i]
+			self.writecsv(proc)
+			#SEND DATA BACK TO CLIENT
+			client_socket.close()
+			print('disconnected from', name)
+			#in server main loop, also process the data from the clients
 
 		print('closing server')
-		#what to heck is this trash
-		#data = client_socket.recv(1024);
-		#print("received:", data)
-		#client_socket.close()
-
 		server_socket.close()
-
-	def client_handler(self, client_socket, name):
-		print('started new thread for client', name)
-		while True:
-			raw = client_socket.recv(1024)
-			if len(raw) > 1:
-				print('%s: %s' % (name, raw))
-				if raw == 'close':
-					client_socket.close()
-					print('disconnected from', name)
-					break
-				data = str(raw).split("'")[1]
-				proc = {}
-                                for i in range(0, len(data)):
-                                    proc[self.FIELDNAMES[i]] = data[i]
-				self.queue.put(proc)
-				print('data added to queue')
 
 	def readcsv(self):
 		if not isfile('points.csv'):

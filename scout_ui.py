@@ -100,7 +100,7 @@ class Ui_Form(QtGui.QWidget):
 		nearby_devices = bluetooth.discover_devices()
 
 		for address in nearby_devices:
-			if bluetooth.lookup_name(address, 8) == 'APPLEPI-PC': #CHANGE TO SERVER NAME
+			if bluetooth.lookup_name(address, 8) == 'SAM-LP': #CHANGE TO SERVER NAME
 				self.server_address = address
 				break
 
@@ -114,7 +114,7 @@ class Ui_Form(QtGui.QWidget):
 		socket.connect((self.server_address, 27))
 		print('successfully connected to server')
 
-		msg = 'ohai'
+		msg = '2067,2,55'
 		socket.send(msg)
 		print('sent: ', msg)
 

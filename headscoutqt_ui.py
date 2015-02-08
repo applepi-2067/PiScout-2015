@@ -233,10 +233,11 @@ class Ui_Form(QtGui.QWidget):
 					client_socket.close()
 					print('disconnected from', name)
 					break
-				data = self.FIELDNAMES + raw.split(',')
-				i = iter(data) #using iterators for this is cool as heck
-				processed = dict(zip(i, i)) #now it's a dict
-				self.queue.put(processed)
+				data = str(raw).split("'")[1]
+				proc = {}
+                                for i in range(0, len(data)):
+                                    proc[self.FIELDNAMES[i]] = data[i]
+				self.queue.put(proc)
 				print('data added to queue')
 
 	def readcsv(self):

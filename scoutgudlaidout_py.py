@@ -636,6 +636,23 @@ class Ui_Form(QtGui.QWidget):
 		self.autozonechkbox_f.setText(_translate("Form", "Moved into auto zone?", None))
 		self.label_7.setText(_translate("Form", "Teleop", None))
 
+		#Begin functions block
+		
+	def teamedit_fn(self):
+		csvinput = self.teamedit.text()
+		if csvinput.isnumeric():
+			return csvinput
+		else:
+			self.errmessage(2)
+			return False
+
+	def matchedit_fn(self):
+		csvinput = self.matchedit.text()
+		if csvinput.isnumeric():
+			return csvinput
+		else:
+			self.errmessage(1)
+			return False
 		
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

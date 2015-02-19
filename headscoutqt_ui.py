@@ -295,7 +295,7 @@ class Ui_Form(QtGui.QWidget):
 	def writecsv(self, csvinput):
 		created = not isfile('points.csv')
 		with open('points.csv', 'at') as csvfile:
-			writecsv = csv.DictWriter(csvfile, self.FIELDNAMES) #fieldnames is defined in __init__
+			writecsv = csv.DictWriter(csvfile, self.FIELDNAMES, lineterminator = '\n') #fieldnames is defined in __init__
 			if created: #only write the header if file has been newly created
 				writecsv.writeheader()
 			writecsv.writerow(csvinput)

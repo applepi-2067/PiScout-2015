@@ -670,7 +670,109 @@ class Ui_Form(QtGui.QWidget):
 		self.label_24.setText(_translate("Form", "Match number", None))
 
 		#Begin functions block
-		
+			
+	def kill_server(self):
+		self.kill = True
+		while self.step > 0:
+			sleep(.01)
+			self.timer.start(100, self)
+			self.step -= 1
+			self.progressBar.setProperty("value", self.step)
+
+	def start_bluetooth_server(self):
+		if not self.kill:
+			return
+
+		self.kill = False
+		Thread(target = self.bluetooth_server).start()
+		while self.step < 100:
+			sleep(.01)
+			self.timer.start(100, self)
+			self.step += 1
+			self.progressBar.setProperty("value", self.step)
+
+	def bluetooth_server(self):
+		self.kill = False
+
+		print('started new thread for server')
+		server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+		server_socket.bind(("", 27))
+		print('server started')
+		server_socket.listen(1)
+		print('listening for clients')
+
+		server_socket.setblocking(0) #hopefully it can still connect to clients in non-blocking mode
+
+		while not self.kill:
+			client_socket = None
+			try:
+				client_socket, client_info = server_socket.accept()
+			except OSError:
+				sleep(0.2)
+				continue
+			name = bluetooth.lookup_name(client_info[0], 4)
+			print('accepted connection from', name)
+			data = str(client_socket.recv(2048))
+			print('received ' + data + ' from ' + name)
+			data = data[2:-1]
+			proc = {}
+			for i in range(0, len(data)):
+				proc[self.FIELDNAMES[i]] = data[i]
+			self.writecsv(proc)
+			#SEND DATA BACK TO CLIENT
+			client_socket.close()
+			print('disconnected from', name)
+			#in server main loop, also process the data from the clients
+
+		print('closing server')
+		server_socket.close()
+
+	def readcsv(self):
+		if not isfile('points.csv'):
+			self.errmessage(4)
+			return
+		with open('points.csv', 'r') as csvfile:
+			pointscsv = csv.DictReader(csvfile)
+			for row in pointscsv:
+				print(row['Match'],row['Team Number'],row['Points'])
+			print('--------')
+			csvfile.close()
+
+	#warning box
+	#errors: 0 = success
+	# 1 = bad match
+	# 2 = bad team
+	# 3 = bad points
+	# 4 = doesn't exist
+	# any other value: unknown
+	def errmessage(self, errno):
+			msgBox = QtGui.QMessageBox()
+			if errno == 0:
+				msgBox.setText('Write success.')
+			elif errno == 1:
+				msgBox.setText('Error: You entered non-numeric input for "Match"')
+			elif errno == 2:
+				msgBox.setText('Error: You entered non-numeric input for "Team Number"')
+			elif errno == 3:
+				msgBox.setText('Error: You entered non-numeric input for "Points"')
+			elif errno == 4:
+				msgBox.setText('Error: file does not exist\nSubmit some data to create a new file')
+			else:
+				msgBox.setText('Error: Unknown error')
+			msgBox.addButton(QtGui.QPushButton('OK'), QtGui.QMessageBox.YesRole)
+			ret = msgBox.exec_()
+			#what does that variable do?
+
+	#3x box grabbing functions
+	#will optimize these functions later
+	def pointsedit_fn(self):
+		csvinput = self.pointsedit.text()
+		if csvinput.isnumeric():
+			return csvinput
+		else:
+			self.errmessage(3)
+			return False
+
 	def teamedit_fn(self):
 		csvinput = self.teamedit.text()
 		if csvinput.isnumeric():
@@ -686,6 +788,25 @@ class Ui_Form(QtGui.QWidget):
 		else:
 			self.errmessage(1)
 			return False
+
+	#converts csv fields to dict and sends to writecsv
+	def submitcsv(self):
+		csvpoints = self.pointsedit_fn()
+		csvteam = self.teamedit_fn()
+		csvmatch = self.matchedit_fn()
+		if csvpoints and csvteam and csvmatch:
+			fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
+			self.writecsv(fcsvinput)
+
+	#writes a csv to file
+	def writecsv(self, csvinput):
+		created = not isfile('points.csv')
+		with open('points.csv', 'at') as csvfile:
+			writecsv = csv.DictWriter(csvfile, self.FIELDNAMES, lineterminator = '\n') #fieldnames is defined in __init__
+			if created: #only write the header if file has been newly created
+				writecsv.writeheader()
+			writecsv.writerow(csvinput)
+			self.errmessage(0)
 		
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

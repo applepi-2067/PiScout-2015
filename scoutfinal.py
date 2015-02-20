@@ -29,26 +29,22 @@ class Ui_Form(QtGui.QWidget):
 		self.kill = True
 		self.queue = Queue() #queue for incoming client data
 		self.FIELDNAMES = [
-		'Match',
-		'Team Number',
-		'          ',
-		'Autonomous',
-		'Totes in auto zone',
-		'Containers in auto zone',
-		'Auto containers from step',
-		'Got stacked set in auto?',
-		'Team moved stack into auto zone?',
-		'Autonomous comments',
-		'          ',
-		'Teleop',
-		'Litter in containers',
-		'Litter in landfill',
-		'Totes from step',
-		'Containers from step',
-		'Tote locations',
-		'Coopertition points',
-		'Coopertition stack?',
-		'Teleop comments'
+		'match',
+		'team',
+		'auto totes',
+		'auto rc',
+		'auto rc from step',
+		'auto stack?',
+		'auto moved?',
+		'auto comments',
+		'litter in rc',
+		'litter in landfill',
+		'totes from step',
+		'rc from step',
+		'tote locations',
+		'coop totes',
+		'coop stack?',
+		'teleop comments'
 		]
 
 	def setupUi(self, Form):
@@ -818,15 +814,8 @@ class Ui_Form(QtGui.QWidget):
 		autostepcontainers = self.autostepcontainers_f.value()
 		
 		#checkbox checking functions
-		if self.autostackchkbox_f.isChecked():
-			autostackedset = 'Yes'
-		else:
-			autostackedset = 'No'
-			
-		if self.autozonechkbox_f.isChecked():
-			autozone = 'Yes'
-		else:
-			autozone = 'No'
+		autostackedset = int(self.autostackchkbox_f.isChecked())
+		autozone = int(self.autozonechkbox_f.isChecked())
 		
 		autocomments = self.autocomments_f.toPlainText()
 		
@@ -836,50 +825,31 @@ class Ui_Form(QtGui.QWidget):
 		steptotes = self.steptotes_f.value()
 		stepcontainers = self.containertotes_f.value()
 		cooppoints = self.coop_f.value()
-		if self.coopstackchkbox_f.isChecked():
-			coopstack = 'Yes'
-		else:
-			coopstack = 'No'
+		coopstack = int(self.coopstackchkbox_f.isChecked())
 		teleopcomments = self.teleopcomments_f.toPlainText()
-		
 		totelocations = self.toteloc_f.value()
-		if totelocations == 0:
-			totelocations = 'All totes from humans'
-		elif totelocations == 10:
-			totelocations = 'All totes from landfill'
-		elif totelocations < 5:
-			totelocations = 'Mostly from humans'
-		elif totelocations > 5:
-			totelocations = 'Mostly from landfill'
-		elif totelocations == 5:
-			totelocations = 'Mix of sources'
 		
 		
 		csvteam = self.teamedit_fn()
 		csvmatch = self.matchedit_fn()
-		blankspace = '          '
 		if csvteam and csvmatch:
 			fcsvinput = {
-			'Match': csvmatch,
-			'Team Number': csvteam,
-			'          ': blankspace,
-			'Autonomous': blankspace,
-			'Totes in auto zone': autototes,
-			'Containers in auto zone': autocontainers,
-			'Auto containers from step': autostepcontainers,
-			'Got stacked set in auto?': autostackedset,
-			'Team moved stack into auto zone?': autozone,
-			'Autonomous comments': autocomments,
-			'          ': blankspace,
-			'Teleop': blankspace,
-			'Litter in containers': containerlitter,
-			'Litter in landfill': landfilllitter,
-			'Totes from step': steptotes,
-			'Containers from step': stepcontainers,
-			'Tote locations': totelocations,
-			'Coopertition points': cooppoints,
-			'Coopertition stack?': coopstack,
-			'Teleop comments': teleopcomments
+			'match': csvmatch,
+			'team': csvteam,
+			'auto totes': autototes,
+			'auto rc': autocontainers,
+			'auto rc from step': autostepcontainers,
+			'auto stack?': autostackedset,
+			'auto moved?': autozone,
+			'auto comments': autocomments,
+			'litter in rc': containerlitter,
+			'litter in landfill': landfilllitter,
+			'totes from step': steptotes,
+			'rc from step': stepcontainers,
+			'tote locations': totelocations,
+			'coop totes': cooppoints,
+			'coop stack?': coopstack,
+			'teleop comments': teleopcomments
 			}
 			overall = int(int(containerlitter) / int(stepcontainers) * int(steptotes) / 10)
 			self.overallrate.display(overall)

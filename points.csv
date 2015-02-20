@@ -1,5 +1,7 @@
-Match,Team Number,Points
-1,2,3
-14,2,3
-87,94,45
-5,2068,3
+Match,Team Number,          ,Autonomous,Totes in auto zone,Containers in auto zone,Auto containers from step,Got stacked set in auto?,Team moved stack into auto zone?,Autonomous comments,          ,Teleop,Litter in containers,Litter in landfill,Totes from step,Containers from step,Tote locations,Coopertition points,Coopertition stack?,Teleop comments
+1,2070,          ,          ,0,0,0,No,No,,          ,          ,0,0,0,0,Mostly from humans,0,No,toteloc 3
+2,2070,          ,          ,0,0,0,No,No,,          ,          ,0,0,0,0,Mostly from humans,0,No,toteloc 0
+3,2070,          ,          ,0,0,0,No,No,,          ,          ,0,0,0,0,Mix of sources,0,No,toteloc 5
+4,2070,          ,          ,0,0,0,No,No,,          ,          ,0,0,0,0,Error handling tote location,0,No,toteloc 7
+5,2070,          ,          ,0,0,0,No,No,,          ,          ,0,0,0,0,All totes from landfill,0,No,toteloc 10
+54654,56464,          ,          ,0,0,0,No,No,,          ,          ,4,2,10,4,Mix of sources,0,No,

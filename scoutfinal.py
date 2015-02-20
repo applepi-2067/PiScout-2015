@@ -40,8 +40,15 @@ class Ui_Form(QtGui.QWidget):
 		'Team moved stack into auto zone?',
 		'Autonomous comments',
 		'          ',
-		'Teleop'
-		
+		'Teleop',
+		'Litter in containers',
+		'Litter in landfill',
+		'Totes from step',
+		'Containers from step',
+		'Tote locations',
+		'Coopertition points',
+		'Coopertition stack?',
+		'Teleop comments'
 		]
 
 	def setupUi(self, Form):
@@ -664,6 +671,7 @@ class Ui_Form(QtGui.QWidget):
 "Left = All totes from human player\n"
 "Middle = Equal mix\n"
 "Right = All totes from landfill", None))
+		self.toteloc_f.setValue(5)
 		self.label_7.setText(_translate("Form", "Teleop", None))
 		self.submitstack_f.setText(_translate("Form", "Submit stack", None))
 		self.coopstackchkbox_f.setText(_translate("Form", "Got stacked set?", None))
@@ -826,12 +834,26 @@ class Ui_Form(QtGui.QWidget):
 		containerlitter = self.containerlitter_f.value()
 		landfilllitter = self.landfilllitter_f.value()
 		steptotes = self.steptotes_f.value()
-		stepcontainers = self.containertotes_f()
+		stepcontainers = self.containertotes_f.value()
 		cooppoints = self.coop_f.value()
 		if self.coopstackchkbox_f.isChecked():
 			coopstack = 'Yes'
 		else:
 			coopstack = 'No'
+		teleopcomments = self.teleopcomments_f.toPlainText()
+		
+		totelocations = self.toteloc_f.value()
+		if totelocations == 0:
+			totelocations = 'All totes from humans'
+		elif totelocations == 10:
+			totelocations = 'All totes from landfill'
+		elif totelocations < 5:
+			totelocations = 'Mostly from humans'
+		elif totelocations > 5:
+			totelocations = 'Mostly from landfill'
+		elif totelocations == 5:
+			totelocations = 'Mix of sources'
+		
 		
 		csvteam = self.teamedit_fn()
 		csvmatch = self.matchedit_fn()
@@ -853,11 +875,14 @@ class Ui_Form(QtGui.QWidget):
 			'Litter in containers': containerlitter,
 			'Litter in landfill': landfilllitter,
 			'Totes from step': steptotes,
-			'Contaners from step': stepcontainers,
+			'Containers from step': stepcontainers,
+			'Tote locations': totelocations,
 			'Coopertition points': cooppoints,
 			'Coopertition stack?': coopstack,
-			
+			'Teleop comments': teleopcomments
 			}
+			overall = int(int(containerlitter) / int(stepcontainers) * int(steptotes) / 10)
+			self.overallrate.display(overall)
 			self.writecsv(fcsvinput)
 
 	#writes a csv to file

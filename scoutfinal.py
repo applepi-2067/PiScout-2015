@@ -61,7 +61,7 @@ class Ui_Form(QtGui.QWidget):
 
 		'''
 		))
-		Form.resize(726, 892)
+		Form.resize(708, 740)
 		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
@@ -641,6 +641,7 @@ class Ui_Form(QtGui.QWidget):
 		self.teamnumfield_f.setPlaceholderText(_translate("Form", "Team number", None))
 		self.matchnumfield_f.setPlaceholderText(_translate("Form", "Match number", None))
 		self.submitmatchstack_f.setText(_translate("Form", "Submit match stats", None))
+		self.submitmatchstack_f.clicked.connect(self.submitcsv)
 		self.label_6.setText(_translate("Form", "Litter in containers", None))
 		self.label_5.setText(_translate("Form", "Litter in landfill", None))
 		self.label_15.setText(_translate("Form", "Totes from step", None))
@@ -766,15 +767,15 @@ class Ui_Form(QtGui.QWidget):
 	#3x box grabbing functions
 	#will optimize these functions later
 	def pointsedit_fn(self):
-		csvinput = self.pointsedit.text()
-		if csvinput.isnumeric():
+		csvinput = self.autototes_f.value()
+		if csvinput <= 3:
 			return csvinput
 		else:
 			self.errmessage(3)
 			return False
 
 	def teamedit_fn(self):
-		csvinput = self.teamedit.text()
+		csvinput = self.teamnumfield_f.text()
 		if csvinput.isnumeric():
 			return csvinput
 		else:
@@ -782,7 +783,7 @@ class Ui_Form(QtGui.QWidget):
 			return False
 
 	def matchedit_fn(self):
-		csvinput = self.matchedit.text()
+		csvinput = self.matchnumfield_f.text()
 		if csvinput.isnumeric():
 			return csvinput
 		else:

@@ -28,7 +28,21 @@ class Ui_Form(QtGui.QWidget):
 		self.setupUi(self)
 		self.kill = True
 		self.queue = Queue() #queue for incoming client data
-		self.FIELDNAMES = ['Match', 'Team Number', 'Points']
+		self.FIELDNAMES = [
+		'Match',
+		'Team Number',
+		'          ',
+		'Autonomous',
+		'Totes in auto zone',
+		'Containers in auto zone',
+		'Auto containers from step',
+		'Got stacked set in auto?',
+		'Team moved stack into auto zone?',
+		'Autonomous comments',
+		'          ',
+		'Teleop'
+		
+		]
 
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8("Form"))
@@ -637,7 +651,7 @@ class Ui_Form(QtGui.QWidget):
 		
 
 	def retranslateUi(self, Form):
-		Form.setWindowTitle(_translate("Form", "PiScout 2015: Turbomeme edition", None))
+		Form.setWindowTitle(_translate("Form", "PiScout 2015: Non-release edition", None))
 		self.teamnumfield_f.setPlaceholderText(_translate("Form", "Team number", None))
 		self.matchnumfield_f.setPlaceholderText(_translate("Form", "Match number", None))
 		self.submitmatchstack_f.setText(_translate("Form", "Submit match stats", None))
@@ -746,6 +760,9 @@ class Ui_Form(QtGui.QWidget):
 	# 3 = bad points
 	# 4 = doesn't exist
 	# any other value: unknown
+	#We should use ands maybe or something to have all the errors in one box
+	#i.e. user enters invalid for match, teamno and points so instead of 3 error boxes, have
+	# one that just puts out all errors, will need to rewrite error handling 
 	def errmessage(self, errno):
 			msgBox = QtGui.QMessageBox()
 			if errno == 0:
@@ -763,16 +780,11 @@ class Ui_Form(QtGui.QWidget):
 			msgBox.addButton(QtGui.QPushButton('OK'), QtGui.QMessageBox.YesRole)
 			ret = msgBox.exec_()
 			#what does that variable do?
+			#idk m8 but without it it doesn't work
 
-	#3x box grabbing functions
-	#will optimize these functions later
-	def pointsedit_fn(self):
-		csvinput = self.autototes_f.value()
-		if csvinput <= 3:
-			return csvinput
-		else:
-			self.errmessage(3)
-			return False
+	#value grabbing functions
+	#will optimize these functions later (?)
+
 
 	def teamedit_fn(self):
 		csvinput = self.teamnumfield_f.text()
@@ -792,11 +804,60 @@ class Ui_Form(QtGui.QWidget):
 
 	#converts csv fields to dict and sends to writecsv
 	def submitcsv(self):
-		csvpoints = self.pointsedit_fn()
+		#Autonomous
+		autototes = self.autototes_f.value()
+		autocontainers = self.autocontainers_f.value()
+		autostepcontainers = self.autostepcontainers_f.value()
+		
+		#checkbox checking functions
+		if self.autostackchkbox_f.isChecked():
+			autostackedset = 'Yes'
+		else:
+			autostackedset = 'No'
+			
+		if self.autozonechkbox_f.isChecked():
+			autozone = 'Yes'
+		else:
+			autozone = 'No'
+		
+		autocomments = self.autocomments_f.toPlainText()
+		
+		#Teleop
+		containerlitter = self.containerlitter_f.value()
+		landfilllitter = self.landfilllitter_f.value()
+		steptotes = self.steptotes_f.value()
+		stepcontainers = self.containertotes_f()
+		cooppoints = self.coop_f.value()
+		if self.coopstackchkbox_f.isChecked():
+			coopstack = 'Yes'
+		else:
+			coopstack = 'No'
+		
 		csvteam = self.teamedit_fn()
 		csvmatch = self.matchedit_fn()
-		if csvpoints and csvteam and csvmatch:
-			fcsvinput = {'Match': csvmatch, 'Team Number': csvteam, 'Points': csvpoints}
+		blankspace = '          '
+		if csvteam and csvmatch:
+			fcsvinput = {
+			'Match': csvmatch,
+			'Team Number': csvteam,
+			'          ': blankspace,
+			'Autonomous': blankspace,
+			'Totes in auto zone': autototes,
+			'Containers in auto zone': autocontainers,
+			'Auto containers from step': autostepcontainers,
+			'Got stacked set in auto?': autostackedset,
+			'Team moved stack into auto zone?': autozone,
+			'Autonomous comments': autocomments,
+			'          ': blankspace,
+			'Teleop': blankspace,
+			'Litter in containers': containerlitter,
+			'Litter in landfill': landfilllitter,
+			'Totes from step': steptotes,
+			'Contaners from step': stepcontainers,
+			'Coopertition points': cooppoints,
+			'Coopertition stack?': coopstack,
+			
+			}
 			self.writecsv(fcsvinput)
 
 	#writes a csv to file
@@ -808,7 +869,8 @@ class Ui_Form(QtGui.QWidget):
 				writecsv.writeheader()
 			writecsv.writerow(csvinput)
 			self.errmessage(0)
-		
+			
+
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)
 	ex = Ui_Form()

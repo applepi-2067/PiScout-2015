@@ -814,8 +814,8 @@ class Ui_Form(QtGui.QWidget):
 		autostepcontainers = self.autostepcontainers_f.value()
 		
 		#checkbox checking functions
-		autostackedset = int(self.autostackchkbox_f.isChecked())
-		autozone = int(self.autozonechkbox_f.isChecked())
+		autostackedset = self.autostackchkbox_f.isChecked()
+		autozone = self.autozonechkbox_f.isChecked()
 		
 		autocomments = self.autocomments_f.toPlainText()
 		
@@ -825,7 +825,7 @@ class Ui_Form(QtGui.QWidget):
 		steptotes = self.steptotes_f.value()
 		stepcontainers = self.containertotes_f.value()
 		cooppoints = self.coop_f.value()
-		coopstack = int(self.coopstackchkbox_f.isChecked())
+		coopstack = self.coopstackchkbox_f.isChecked()
 		teleopcomments = self.teleopcomments_f.toPlainText()
 		totelocations = self.toteloc_f.value()
 		
@@ -851,8 +851,8 @@ class Ui_Form(QtGui.QWidget):
 			'coop stack?': coopstack,
 			'teleop comments': teleopcomments
 			}
-			overall = int(int(containerlitter) / int(stepcontainers) * int(steptotes) / 10)
-			self.overallrate.display(overall)
+			#overall = int(int(containerlitter) / int(stepcontainers) * int(steptotes) / 10)
+			#self.overallrate.display(overall)
 			self.writecsv(fcsvinput)
 
 	#writes a csv to file

@@ -56,8 +56,8 @@ class Ui_Form(QtGui.QWidget):
 		#verticalLayout {
 			border: 3px solid gray; border-radius: 40px; background: white;
 		}
-
-		QPushButton	 {
+	
+		/*QPushButton	 {
 			background-color:#599bb3;
 			border-radius:8px;
 			color:#ffffff;
@@ -75,10 +75,10 @@ class Ui_Form(QtGui.QWidget):
 				position:relative;
 				top:1px;
 			}
-
+*/
 		'''
 		))
-		Form.resize(708, 740)
+		Form.resize(650, 740)
 		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
@@ -277,7 +277,7 @@ class Ui_Form(QtGui.QWidget):
 		self.label_7.setAlignment(QtCore.Qt.AlignCenter)
 		self.label_7.setObjectName(_fromUtf8("label_7"))
 		self.verticalLayout.addWidget(self.label_7)
-		self.can_f = QtGui.QLabel(Form)
+		self.can_f = QtGui.QPushButton(Form)
 		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
@@ -285,50 +285,57 @@ class Ui_Form(QtGui.QWidget):
 		self.can_f.setSizePolicy(sizePolicy)
 		self.can_f.setMaximumSize(QtCore.QSize(229, 104))
 		self.can_f.setText(_fromUtf8(""))
-		self.can_f.setPixmap(QtGui.QPixmap(_fromUtf8("can.png")))
-		self.can_f.setScaledContents(True)
+		self.can_f.setStyleSheet("qproperty-icon: url(can.png);")
+		#self.can_f.setPixmap(QtGui.QPixmap(_fromUtf8("can.png")))
+		#self.can_f.setScaledContents(True)
 		self.can_f.setObjectName(_fromUtf8("can_f"))
 		self.verticalLayout.addWidget(self.can_f)
-		self.tote6_f = QtGui.QLabel(Form)
+		self.tote6_f = QtGui.QPushButton(Form)
 		self.tote6_f.setMaximumSize(QtCore.QSize(229, 52))
 		self.tote6_f.setText(_fromUtf8(""))
-		self.tote6_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		self.tote6_f.setScaledContents(True)
+		self.tote6_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		#self.tote6_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		#self.tote6_f.setScaledContents(True)
 		self.tote6_f.setObjectName(_fromUtf8("tote6_f"))
 		self.verticalLayout.addWidget(self.tote6_f)
-		self.tote5_f = QtGui.QLabel(Form)
+		self.tote5_f = QtGui.QPushButton(Form)
 		self.tote5_f.setMaximumSize(QtCore.QSize(229, 52))
 		self.tote5_f.setText(_fromUtf8(""))
-		self.tote5_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		self.tote5_f.setScaledContents(True)
+		self.tote5_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		#self.tote5_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		#self.tote5_f.setScaledContents(True)
 		self.tote5_f.setObjectName(_fromUtf8("tote5_f"))
 		self.verticalLayout.addWidget(self.tote5_f)
-		self.tote4_f = QtGui.QLabel(Form)
+		self.tote4_f = QtGui.QPushButton(Form)
 		self.tote4_f.setMaximumSize(QtCore.QSize(229, 51))
 		self.tote4_f.setText(_fromUtf8(""))
-		self.tote4_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		self.tote4_f.setScaledContents(True)
+		self.tote4_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		#self.tote4_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		#self.tote4_f.setScaledContents(True)
 		self.tote4_f.setObjectName(_fromUtf8("tote4_f"))
 		self.verticalLayout.addWidget(self.tote4_f)
-		self.tote3_f = QtGui.QLabel(Form)
+		self.tote3_f = QtGui.QPushButton(Form)
 		self.tote3_f.setMaximumSize(QtCore.QSize(229, 52))
 		self.tote3_f.setText(_fromUtf8(""))
-		self.tote3_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		self.tote3_f.setScaledContents(True)
+		self.tote3_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		#self.tote3_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		#self.tote3_f.setScaledContents(True)
 		self.tote3_f.setObjectName(_fromUtf8("tote3_f"))
 		self.verticalLayout.addWidget(self.tote3_f)
-		self.tote2_f = QtGui.QLabel(Form)
+		self.tote2_f = QtGui.QPushButton(Form)
 		self.tote2_f.setMaximumSize(QtCore.QSize(229, 52))
 		self.tote2_f.setText(_fromUtf8(""))
-		self.tote2_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		self.tote2_f.setScaledContents(True)
+		self.tote2_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		#self.tote2_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		#self.tote2_f.setScaledContents(True)
 		self.tote2_f.setObjectName(_fromUtf8("tote2_f"))
 		self.verticalLayout.addWidget(self.tote2_f)
-		self.tote1_f = QtGui.QLabel(Form)
+		self.tote1_f = QtGui.QPushButton(Form)
 		self.tote1_f.setMaximumSize(QtCore.QSize(229, 52))
 		self.tote1_f.setText(_fromUtf8(""))
-		self.tote1_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		self.tote1_f.setScaledContents(True)
+		self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		#self.tote1_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		#self.tote1_f.setScaledContents(True)
 		self.tote1_f.setObjectName(_fromUtf8("tote1_f"))
 		self.verticalLayout.addWidget(self.tote1_f)
 		self.submitstack_f = QtGui.QPushButton(Form)
@@ -687,9 +694,13 @@ class Ui_Form(QtGui.QWidget):
 		#self.autocomments_f.setPlaceholderText(_translate("Form", "Comments on autonomous", None))
 		self.label_25.setText(_translate("Form", "Team number", None))
 		self.label_24.setText(_translate("Form", "Match number", None))
+		#tote diddlers
+		self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda totenum=1: self.cleartotes(totenum))
+		self.connect(self.tote1_f, QtCore.SIGNAL("clicked()"), lambda totenum=1: self.toteclick(totenum))
+		
 
-		#Begin functions block
-			
+	#Begin functions block	
+	
 	def kill_server(self):
 		self.kill = True
 		while self.step > 0:
@@ -864,7 +875,49 @@ class Ui_Form(QtGui.QWidget):
 				writecsv.writeheader()
 			writecsv.writerow(csvinput)
 			self.errmessage(0)
-			
+	
+	#tote clickers
+	#1-6 = totes, 7 = can
+	def toteclick(self, totenum):
+		if totenum == 1:
+			self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
+		elif totenum == 2:
+			self.tote2_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		elif totenum == 3:
+			self.tote3_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		elif totenum == 4:
+			self.tote4_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		elif totenum == 5:
+			self.tote5_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		elif totenum == 6:
+			self.tote6_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+		elif totenum == 7:
+			self.can_f.setPixmap(QtGui.QPixmap(_fromUtf8("can.png")))
+	
+	#clear totes/cans
+	def cleartotes(self, totenum):
+		if totenum == 1:
+			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
+		elif totenum == 2:
+			self.tote2_f.clear()
+		elif totenum == 3:
+			self.tote3_f.clear()
+		elif totenum == 4:
+			self.tote4_f.clear()
+		elif totenum == 5:
+			self.tote5_f.clear()
+		elif totenum == 6:
+			self.tote6_f.clear()
+		elif totenum == 7:
+			self.can_f.clear()
+		elif totenum == 8:
+			self.tote1_f.clear()
+			self.tote2_f.clear()
+			self.tote3_f.clear()
+			self.tote4_f.clear()
+			self.tote5_f.clear()
+			self.tote6_f.clear()
+			self.can_f.clear()
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

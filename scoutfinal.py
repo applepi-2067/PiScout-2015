@@ -55,6 +55,9 @@ class Ui_Form(QtGui.QWidget):
 		'max container level',
 		'avg container level'
 		]
+		self.totes = [self.tote1_f, self.tote2_f, self.tote3_f, self.tote4_f, self.tote5_f, self.tote6_f, self.can_f]
+		self.cleartotes(8) #clear all the checkboxes to start; some kiddo made them start with checked
+
 
 	def setupUi(self, Form):
 		Form.setObjectName(_fromUtf8("Form"))
@@ -709,55 +712,14 @@ class Ui_Form(QtGui.QWidget):
 		self.connect(self.can_f, QtCore.SIGNAL("clicked()"), lambda totenum=7: self.clickhandler(totenum))
 		
 	def clickhandler(self, totenum):
-		if totenum == 1:
-			if self.tote1_f.checkState() == 1:
-				self.changeicontote(1)
-			elif self.tote1_f.checkState() == 2:
-				self.changeiconcan(1)
-			else:
-				self.cleartotes(1)
-		elif totenum == 2:
-			if self.tote2_f.checkState() == 1:
-				self.changeicontote(2)
-			elif self.tote2_f.checkState() == 2:
-				self.changeiconcan(2)
-			else:
-				self.cleartotes(2)
-		elif totenum == 3:
-			if self.tote3_f.checkState() == 1:
-				self.changeicontote(3)
-			elif self.tote3_f.checkState() == 2:
-				self.changeiconcan(3)
-			else:
-				self.cleartotes(3)
-		elif totenum == 4:
-			if self.tote4_f.checkState() == 1:
-				self.changeicontote(4)
-			elif self.tote4_f.checkState() == 2:
-				self.changeiconcan(4)
-			else:
-				self.cleartotes(4)
-		elif totenum == 5:
-			if self.tote5_f.checkState() == 1:
-				self.changeicontote(5)
-			elif self.tote5_f.checkState() == 2:
-				self.changeiconcan(5)
-			else:
-				self.cleartotes(5)
-		elif totenum == 6:
-			if self.tote6_f.checkState() == 1:
-				self.changeicontote(6)
-			elif self.tote6_f.checkState() == 2:
-				self.changeiconcan(6)
-			else:
-				self.cleartotes(6)
-		elif totenum == 7:
-			if self.can_f.checkState() == 1:
-				self.changeicontote(7)
-			elif self.can_f.checkState() == 2:
-				self.changeiconcan(7)
-			else:
-				self.cleartotes(7)
+		tote = self.totes[totenum-1]
+		if tote.checkState() == 1:
+			self.changeicontote(totenum)
+		elif tote.checkState() == 2:
+			self.changeiconcan(totenum)
+		else:
+			self.cleartotes(totenum)
+
 	def kill_server(self):
 		self.kill = True
 		while self.step > 0:
@@ -956,89 +918,23 @@ class Ui_Form(QtGui.QWidget):
 	#tote clickers
 	#1-6 = totes, 7 = can
 	def changeicontote(self, totenum):
-		if totenum == 1:
-			self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.tote1_f.setText('Tote')
-		elif totenum == 2:
-			self.tote2_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.tote2_f.setText('Tote')
-		elif totenum == 3:
-			self.tote3_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.tote3_f.setText('Tote')
-		elif totenum == 4:
-			self.tote4_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.tote4_f.setText('Tote')
-		elif totenum == 5:
-			self.tote5_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.tote5_f.setText('Tote')
-		elif totenum == 6:
-			self.tote6_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.tote6_f.setText('Tote')
-		elif totenum == 7:
-			self.can_f.setStyleSheet("qproperty-icon: url(tote.png);")
-			self.can_f.setText('Tote')
+		self.totes[totenum-1].setStyleSheet("qproperty-icon: url(tote.png);")
+		self.totes[totenum-1].setText('Tote')
 			
 	def changeiconcan(self, totenum):
-		if totenum == 1:
-			self.tote1_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.tote1_f.setText('Container')
-		elif totenum == 2:
-			self.tote2_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.tote2_f.setText('Container')
-		elif totenum == 3:
-			self.tote3_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.tote3_f.setText('Container')
-		elif totenum == 4:
-			self.tote4_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.tote4_f.setText('Container')
-		elif totenum == 5:
-			self.tote5_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.tote5_f.setText('Container')
-		elif totenum == 6:
-			self.tote6_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.tote6_f.setText('Container')
-		elif totenum == 7:
-			self.can_f.setStyleSheet("qproperty-icon: url(can.png);")
-			self.can_f.setText('Container')
-	
+		self.totes[totenum-1].setStyleSheet("qproperty-icon: url(can.png);")
+		self.totes[totenum-1].setText('Container')
+
 	#clear totes/cans
 	def cleartotes(self, totenum):
-		if totenum == 1:
-			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote1_f.setText('Nothing')
-		elif totenum == 2:
-			self.tote2_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote2_f.setText('Nothing')
-		elif totenum == 3:
-			self.tote3_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote3_f.setText('Nothing')
-		elif totenum == 4:
-			self.tote4_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote4_f.setText('Nothing')
-		elif totenum == 5:
-			self.tote5_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote5_f.setText('Nothing')
-		elif totenum == 6:
-			self.tote6_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote6_f.setText('Nothing')
-		elif totenum == 7:
-			self.can_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.can_f.setText('Nothing')
-		elif totenum == 8:
-			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote2_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote3_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote4_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote5_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote6_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.can_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			self.tote1_f.setText('Nothing')
-			self.tote2_f.setText('Nothing')
-			self.tote3_f.setText('Nothing')
-			self.tote4_f.setText('Nothing')
-			self.tote5_f.setText('Nothing')
-			self.tote6_f.setText('Nothing')
-			self.can_f.setText('Nothing')
+		if totenum < 8:
+			self.totes[totenum-1].setStyleSheet("qproperty-icon: url(blank.png);")
+			self.totes[totenum-1].setText('Nothing')
+		else:
+			for tote in self.totes:
+				tote.setStyleSheet("qproperty-icon: url(blank.png);")
+				tote.setText('Nothing')
+				tote.setCheckState(0)
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

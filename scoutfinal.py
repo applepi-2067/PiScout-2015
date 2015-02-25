@@ -695,8 +695,10 @@ class Ui_Form(QtGui.QWidget):
 		self.label_25.setText(_translate("Form", "Team number", None))
 		self.label_24.setText(_translate("Form", "Match number", None))
 		#tote diddlers
-		self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda totenum=1: self.cleartotes(totenum))
-		self.connect(self.tote1_f, QtCore.SIGNAL("clicked()"), lambda totenum=1: self.toteclick(totenum))
+		increment = 0
+		self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda increment = self.increase(increment): self.increase)
+		#self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda totenum=8: self.cleartotes(totenum))
+		self.connect(self.tote1_f, QtCore.SIGNAL("clicked()"), lambda totenum=1, clicknum =+ 1: self.toteclick(totenum, clicknum))
 		
 
 	#Begin functions block	
@@ -878,9 +880,16 @@ class Ui_Form(QtGui.QWidget):
 	
 	#tote clickers
 	#1-6 = totes, 7 = can
-	def toteclick(self, totenum):
+	def toteclick(self, totenum, clicknum):
 		if totenum == 1:
-			self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			if clicknum == 1:
+				self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
+				clicknum == 2
+				print(clicknum)
+			elif clicknum == 2:
+				self.tote1_f.setStyleSheet("qproperty-icon: url(can.png);")
+				clicknum == 1
+				print(clicknum)
 		elif totenum == 2:
 			self.tote2_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
 		elif totenum == 3:
@@ -899,25 +908,38 @@ class Ui_Form(QtGui.QWidget):
 		if totenum == 1:
 			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 2:
-			self.tote2_f.clear()
+			self.tote2_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 3:
-			self.tote3_f.clear()
+			self.tote3_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 4:
-			self.tote4_f.clear()
+			self.tote4_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 5:
-			self.tote5_f.clear()
+			self.tote5_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 6:
-			self.tote6_f.clear()
+			self.tote6_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 7:
-			self.can_f.clear()
+			self.can_f.setStyleSheet("qproperty-icon: url(blank.png);")
 		elif totenum == 8:
-			self.tote1_f.clear()
-			self.tote2_f.clear()
-			self.tote3_f.clear()
-			self.tote4_f.clear()
-			self.tote5_f.clear()
-			self.tote6_f.clear()
-			self.can_f.clear()
+			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote2_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote3_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote4_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote5_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote6_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.can_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			
+	#testing trash
+	def increase(self, increment):
+		if increment == 0:
+			print('increment0')
+			increment += 1
+			return increment
+		elif increment == 1:
+			print('increment1')
+			increment -= 1
+			return increment
+		
+	#increment = increase(increment)
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

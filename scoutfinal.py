@@ -46,7 +46,14 @@ class Ui_Form(QtGui.QWidget):
 		'tote locations',
 		'coop totes',
 		'coop stack?',
-		'teleop comments'
+		'teleop comments',
+		'total totes',
+		'total stacks',
+		'avg stack height',
+		'max height',
+		'container score',
+		'max container level',
+		'avg container level'
 		]
 
 	def setupUi(self, Form):
@@ -867,6 +874,10 @@ class Ui_Form(QtGui.QWidget):
 			self.errmessage(1)
 			return False
 
+	#submitstack/fancything() handler/calculator
+	def stackscalc(self):
+		pass
+	
 	#converts csv fields to dict and sends to writecsv
 	def submitcsv(self):
 		#Autonomous
@@ -890,6 +901,15 @@ class Ui_Form(QtGui.QWidget):
 		teleopcomments = self.teleopcomments_f.toPlainText()
 		totelocations = self.toteloc_f.value()
 		
+		#other tote stuff
+		totaltotes = 'temp'
+		totalstacks = self.stackscalc()
+		avgheight = 'temp'
+		maxheight = 'temp'
+		containerscore = 'temp'
+		maxclevel = 'temp'
+		avgclevel = 'temp'
+		
 		
 		csvteam = self.teamedit_fn()
 		csvmatch = self.matchedit_fn()
@@ -910,7 +930,14 @@ class Ui_Form(QtGui.QWidget):
 			'tote locations': totelocations,
 			'coop totes': cooppoints,
 			'coop stack?': coopstack,
-			'teleop comments': teleopcomments
+			'teleop comments': teleopcomments,
+			'total totes': totaltotes,
+			'total stacks': totalstacks,
+			'avg stack height': avgheight,
+			'max height': maxheight,
+			'container score': containerscore,
+			'max container level': maxclevel,
+			'avg container level': avgclevel
 			}
 			#overall = int(int(containerlitter) / int(stepcontainers) * int(steptotes) / 10)
 			#self.overallrate.display(overall)

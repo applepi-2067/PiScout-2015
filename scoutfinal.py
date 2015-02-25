@@ -21,6 +21,8 @@ except AttributeError:
 	def _translate(context, text, disambig):
 		return QtGui.QApplication.translate(context, text, disambig)
 
+
+
 class Ui_Form(QtGui.QWidget):
 
 	def __init__(self):
@@ -277,65 +279,58 @@ class Ui_Form(QtGui.QWidget):
 		self.label_7.setAlignment(QtCore.Qt.AlignCenter)
 		self.label_7.setObjectName(_fromUtf8("label_7"))
 		self.verticalLayout.addWidget(self.label_7)
-		self.can_f = QtGui.QPushButton(Form)
+		self.can_f = QtGui.QCheckBox(Form)
 		sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.can_f.sizePolicy().hasHeightForWidth())
 		self.can_f.setSizePolicy(sizePolicy)
 		self.can_f.setMaximumSize(QtCore.QSize(229, 104))
-		self.can_f.setText(_fromUtf8(""))
+		self.can_f.setText(_fromUtf8("Container"))
 		self.can_f.setStyleSheet("qproperty-icon: url(can.png);")
-		#self.can_f.setPixmap(QtGui.QPixmap(_fromUtf8("can.png")))
-		#self.can_f.setScaledContents(True)
+		self.can_f.setTristate(True)
 		self.can_f.setObjectName(_fromUtf8("can_f"))
 		self.verticalLayout.addWidget(self.can_f)
-		self.tote6_f = QtGui.QPushButton(Form)
+		self.tote6_f = QtGui.QCheckBox(Form)
 		self.tote6_f.setMaximumSize(QtCore.QSize(229, 52))
-		self.tote6_f.setText(_fromUtf8(""))
+		self.tote6_f.setText(_fromUtf8("Tote"))
 		self.tote6_f.setStyleSheet("qproperty-icon: url(tote.png);")
-		#self.tote6_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		#self.tote6_f.setScaledContents(True)
+		self.tote6_f.setTristate(True)
 		self.tote6_f.setObjectName(_fromUtf8("tote6_f"))
 		self.verticalLayout.addWidget(self.tote6_f)
-		self.tote5_f = QtGui.QPushButton(Form)
+		self.tote5_f = QtGui.QCheckBox(Form)
 		self.tote5_f.setMaximumSize(QtCore.QSize(229, 52))
-		self.tote5_f.setText(_fromUtf8(""))
+		self.tote5_f.setText(_fromUtf8("Tote"))
 		self.tote5_f.setStyleSheet("qproperty-icon: url(tote.png);")
-		#self.tote5_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		#self.tote5_f.setScaledContents(True)
+		self.tote5_f.setTristate(True)
 		self.tote5_f.setObjectName(_fromUtf8("tote5_f"))
 		self.verticalLayout.addWidget(self.tote5_f)
-		self.tote4_f = QtGui.QPushButton(Form)
+		self.tote4_f = QtGui.QCheckBox(Form)
 		self.tote4_f.setMaximumSize(QtCore.QSize(229, 51))
-		self.tote4_f.setText(_fromUtf8(""))
+		self.tote4_f.setText(_fromUtf8("Tote"))
 		self.tote4_f.setStyleSheet("qproperty-icon: url(tote.png);")
-		#self.tote4_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		#self.tote4_f.setScaledContents(True)
+		self.tote4_f.setTristate(True)
 		self.tote4_f.setObjectName(_fromUtf8("tote4_f"))
 		self.verticalLayout.addWidget(self.tote4_f)
-		self.tote3_f = QtGui.QPushButton(Form)
+		self.tote3_f = QtGui.QCheckBox(Form)
 		self.tote3_f.setMaximumSize(QtCore.QSize(229, 52))
-		self.tote3_f.setText(_fromUtf8(""))
+		self.tote3_f.setText(_fromUtf8("Tote"))
 		self.tote3_f.setStyleSheet("qproperty-icon: url(tote.png);")
-		#self.tote3_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		#self.tote3_f.setScaledContents(True)
+		self.tote3_f.setTristate(True)
 		self.tote3_f.setObjectName(_fromUtf8("tote3_f"))
 		self.verticalLayout.addWidget(self.tote3_f)
-		self.tote2_f = QtGui.QPushButton(Form)
+		self.tote2_f = QtGui.QCheckBox(Form)
 		self.tote2_f.setMaximumSize(QtCore.QSize(229, 52))
-		self.tote2_f.setText(_fromUtf8(""))
+		self.tote2_f.setText(_fromUtf8("Tote"))
 		self.tote2_f.setStyleSheet("qproperty-icon: url(tote.png);")
-		#self.tote2_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		#self.tote2_f.setScaledContents(True)
+		self.tote2_f.setTristate(True)
 		self.tote2_f.setObjectName(_fromUtf8("tote2_f"))
 		self.verticalLayout.addWidget(self.tote2_f)
-		self.tote1_f = QtGui.QPushButton(Form)
+		self.tote1_f = QtGui.QCheckBox(Form)
 		self.tote1_f.setMaximumSize(QtCore.QSize(229, 52))
-		self.tote1_f.setText(_fromUtf8(""))
+		self.tote1_f.setText(_fromUtf8("Tote"))
 		self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
-		#self.tote1_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
-		#self.tote1_f.setScaledContents(True)
+		self.tote1_f.setTristate(True)
 		self.tote1_f.setObjectName(_fromUtf8("tote1_f"))
 		self.verticalLayout.addWidget(self.tote1_f)
 		self.submitstack_f = QtGui.QPushButton(Form)
@@ -695,14 +690,67 @@ class Ui_Form(QtGui.QWidget):
 		self.label_25.setText(_translate("Form", "Team number", None))
 		self.label_24.setText(_translate("Form", "Match number", None))
 		#tote diddlers
-		increment = 0
-		self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda increment = self.increase(increment): self.increase)
-		#self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda totenum=8: self.cleartotes(totenum))
-		self.connect(self.tote1_f, QtCore.SIGNAL("clicked()"), lambda totenum=1, clicknum =+ 1: self.toteclick(totenum, clicknum))
+		#increment = 0
+		#self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda increment = self.increase(increment): self.increase)
+		self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda totenum=8: self.cleartotes(totenum))
+		self.connect(self.tote1_f, QtCore.SIGNAL("clicked()"), lambda totenum=1: self.clickhandler(totenum))
+		self.connect(self.tote2_f, QtCore.SIGNAL("clicked()"), lambda totenum=2: self.clickhandler(totenum))
+		self.connect(self.tote3_f, QtCore.SIGNAL("clicked()"), lambda totenum=3: self.clickhandler(totenum))
+		self.connect(self.tote4_f, QtCore.SIGNAL("clicked()"), lambda totenum=4: self.clickhandler(totenum))
+		self.connect(self.tote5_f, QtCore.SIGNAL("clicked()"), lambda totenum=5: self.clickhandler(totenum))
+		self.connect(self.tote6_f, QtCore.SIGNAL("clicked()"), lambda totenum=6: self.clickhandler(totenum))
+		self.connect(self.can_f, QtCore.SIGNAL("clicked()"), lambda totenum=7: self.clickhandler(totenum))
 		
-
-	#Begin functions block	
-	
+	def clickhandler(self, totenum):
+		if totenum == 1:
+			if self.tote1_f.checkState() == 1:
+				self.changeicontote(1)
+			elif self.tote1_f.checkState() == 2:
+				self.changeiconcan(1)
+			else:
+				self.cleartotes(1)
+		elif totenum == 2:
+			if self.tote2_f.checkState() == 1:
+				self.changeicontote(2)
+			elif self.tote2_f.checkState() == 2:
+				self.changeiconcan(2)
+			else:
+				self.cleartotes(2)
+		elif totenum == 3:
+			if self.tote3_f.checkState() == 1:
+				self.changeicontote(3)
+			elif self.tote3_f.checkState() == 2:
+				self.changeiconcan(3)
+			else:
+				self.cleartotes(3)
+		elif totenum == 4:
+			if self.tote4_f.checkState() == 1:
+				self.changeicontote(4)
+			elif self.tote4_f.checkState() == 2:
+				self.changeiconcan(4)
+			else:
+				self.cleartotes(4)
+		elif totenum == 5:
+			if self.tote5_f.checkState() == 1:
+				self.changeicontote(5)
+			elif self.tote5_f.checkState() == 2:
+				self.changeiconcan(5)
+			else:
+				self.cleartotes(5)
+		elif totenum == 6:
+			if self.tote6_f.checkState() == 1:
+				self.changeicontote(6)
+			elif self.tote6_f.checkState() == 2:
+				self.changeiconcan(6)
+			else:
+				self.cleartotes(6)
+		elif totenum == 7:
+			if self.can_f.checkState() == 1:
+				self.changeicontote(7)
+			elif self.can_f.checkState() == 2:
+				self.changeiconcan(7)
+			else:
+				self.cleartotes(7)
 	def kill_server(self):
 		self.kill = True
 		while self.step > 0:
@@ -880,45 +928,75 @@ class Ui_Form(QtGui.QWidget):
 	
 	#tote clickers
 	#1-6 = totes, 7 = can
-	def toteclick(self, totenum, clicknum):
+	def changeicontote(self, totenum):
 		if totenum == 1:
-			if clicknum == 1:
-				self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
-				clicknum == 2
-				print(clicknum)
-			elif clicknum == 2:
-				self.tote1_f.setStyleSheet("qproperty-icon: url(can.png);")
-				clicknum == 1
-				print(clicknum)
+			self.tote1_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.tote1_f.setText('Tote')
 		elif totenum == 2:
-			self.tote2_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+			self.tote2_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.tote2_f.setText('Tote')
 		elif totenum == 3:
-			self.tote3_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+			self.tote3_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.tote3_f.setText('Tote')
 		elif totenum == 4:
-			self.tote4_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+			self.tote4_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.tote4_f.setText('Tote')
 		elif totenum == 5:
-			self.tote5_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+			self.tote5_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.tote5_f.setText('Tote')
 		elif totenum == 6:
-			self.tote6_f.setPixmap(QtGui.QPixmap(_fromUtf8("tote.png")))
+			self.tote6_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.tote6_f.setText('Tote')
 		elif totenum == 7:
-			self.can_f.setPixmap(QtGui.QPixmap(_fromUtf8("can.png")))
+			self.can_f.setStyleSheet("qproperty-icon: url(tote.png);")
+			self.can_f.setText('Tote')
+			
+	def changeiconcan(self, totenum):
+		if totenum == 1:
+			self.tote1_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.tote1_f.setText('Container')
+		elif totenum == 2:
+			self.tote2_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.tote2_f.setText('Container')
+		elif totenum == 3:
+			self.tote3_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.tote3_f.setText('Container')
+		elif totenum == 4:
+			self.tote4_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.tote4_f.setText('Container')
+		elif totenum == 5:
+			self.tote5_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.tote5_f.setText('Container')
+		elif totenum == 6:
+			self.tote6_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.tote6_f.setText('Container')
+		elif totenum == 7:
+			self.can_f.setStyleSheet("qproperty-icon: url(can.png);")
+			self.can_f.setText('Container')
 	
 	#clear totes/cans
 	def cleartotes(self, totenum):
 		if totenum == 1:
 			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote1_f.setText('Nothing')
 		elif totenum == 2:
 			self.tote2_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote2_f.setText('Nothing')
 		elif totenum == 3:
 			self.tote3_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote3_f.setText('Nothing')
 		elif totenum == 4:
 			self.tote4_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote4_f.setText('Nothing')
 		elif totenum == 5:
 			self.tote5_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote5_f.setText('Nothing')
 		elif totenum == 6:
 			self.tote6_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.tote6_f.setText('Nothing')
 		elif totenum == 7:
 			self.can_f.setStyleSheet("qproperty-icon: url(blank.png);")
+			self.can_f.setText('Nothing')
 		elif totenum == 8:
 			self.tote1_f.setStyleSheet("qproperty-icon: url(blank.png);")
 			self.tote2_f.setStyleSheet("qproperty-icon: url(blank.png);")
@@ -927,19 +1005,13 @@ class Ui_Form(QtGui.QWidget):
 			self.tote5_f.setStyleSheet("qproperty-icon: url(blank.png);")
 			self.tote6_f.setStyleSheet("qproperty-icon: url(blank.png);")
 			self.can_f.setStyleSheet("qproperty-icon: url(blank.png);")
-			
-	#testing trash
-	def increase(self, increment):
-		if increment == 0:
-			print('increment0')
-			increment += 1
-			return increment
-		elif increment == 1:
-			print('increment1')
-			increment -= 1
-			return increment
-		
-	#increment = increase(increment)
+			self.tote1_f.setText('Nothing')
+			self.tote2_f.setText('Nothing')
+			self.tote3_f.setText('Nothing')
+			self.tote4_f.setText('Nothing')
+			self.tote5_f.setText('Nothing')
+			self.tote6_f.setText('Nothing')
+			self.can_f.setText('Nothing')
 
 if __name__ == '__main__':
 	app = QtGui.QApplication(sys.argv)

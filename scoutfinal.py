@@ -684,7 +684,6 @@ class Ui_Form(QtGui.QWidget):
 		self.submitstack_f.setText(_translate("Form", "Submit stack", None))
 		self.coopstackchkbox_f.setText(_translate("Form", "Got stacked set?", None))
 		self.label_19.setText(_translate("Form", "Coopertition", None))
-		#self.teleopcomments_f.setPlaceholderText(_translate("Form", "Comments on Teleop", None))
 		self.label_4.setText(_translate("Form", "Totes in Auto Zone", None))
 		self.label_3.setText(_translate("Form", "Containers in Auto Zone", None))
 		self.label_2.setText(_translate("Form", "Containers from Step", None))
@@ -696,12 +695,9 @@ class Ui_Form(QtGui.QWidget):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-		#self.autocomments_f.setPlaceholderText(_translate("Form", "Comments on autonomous", None))
 		self.label_25.setText(_translate("Form", "Team number", None))
 		self.label_24.setText(_translate("Form", "Match number", None))
 		#tote diddlers
-		#increment = 0
-		#self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda increment = self.increase(increment): self.increase)
 		self.connect(self.submitstack_f, QtCore.SIGNAL("clicked()"), lambda totenum=8: self.cleartotes(totenum))
 		self.connect(self.tote1_f, QtCore.SIGNAL("clicked()"), lambda totenum=1: self.clickhandler(totenum))
 		self.connect(self.tote2_f, QtCore.SIGNAL("clicked()"), lambda totenum=2: self.clickhandler(totenum))
@@ -813,13 +809,8 @@ class Ui_Form(QtGui.QWidget):
 				msgBox.setText('Error: Unknown error')
 			msgBox.addButton(QtGui.QPushButton('OK'), QtGui.QMessageBox.YesRole)
 			ret = msgBox.exec_()
-			#what does that variable do?
-			#idk m8 but without it it doesn't work
 
 	#value grabbing functions
-	#will optimize these functions later (?)
-
-
 	def teamedit_fn(self):
 		csvinput = self.teamnumfield_f.text()
 		if csvinput.isnumeric():
@@ -901,8 +892,7 @@ class Ui_Form(QtGui.QWidget):
 			'max container level': maxclevel,
 			'avg container level': avgclevel
 			}
-			#overall = int(int(containerlitter) / int(stepcontainers) * int(steptotes) / 10)
-			#self.overallrate.display(overall)
+			#self.overallrate.display(overall) <--- this is the LCD thingy, do something with it at some point maybe I guess
 			self.writecsv(fcsvinput)
 
 	#writes a csv to file
